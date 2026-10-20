@@ -42,6 +42,14 @@
 - [ ] Привязать домен
 - [ ] Убрать `Disallow` из `robots.txt` и `noindex` из `<head>` после согласования
 
+## Telegram Mini App
+
+Папка `app/` — мини-апп для Telegram-бота: `https://berghhman.github.io/tihonova-site/app/`.
+Пять разделов в нижнем меню: главная, подбор (квиз и заявка в Telegram), ипотека
+(калькулятор с лимитом семейной 12 млн), кейсы и отзывы, о себе.
+Заявки открывают чат с @agent_tixonova с готовым текстом. Ссылки на разделы:
+`t.me/<бот>?startapp=quiz`, `money`, `cases`, `about`.
+
 ## Публикация
 
 GitHub Pages, ветка `main`, корень репозитория.
