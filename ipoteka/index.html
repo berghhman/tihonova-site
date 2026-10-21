@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#F1F2F4">
+<meta name="color-scheme" content="light">
+<meta name="format-detection" content="telephone=no">
+<script src="https://telegram.org/js/telegram-web-app.js?59"></script>
+<title>Ваша ставка по ипотеке · Людмила Тихонова</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap">
+<style>
+/* Один сценарий: старт → 3–4 вопроса → ставка и платёж → как снизить → заявка. Светлый нативный стиль Telegram */
+:root{
+  --bg:#F1F2F4; --surface:#FFFFFF; --fill:#E6E8EB;
+  --text:#121417; --hint:#6B727B; --line:rgba(18,20,23,.09);
+  --accent:#E09A3E; --on-accent:#1C1408; --accent-text:#94561A; --accent-soft:rgba(224,154,62,.15);
+  --good:#1F8A4C; --good-soft:rgba(31,138,76,.10); --overlay:rgba(10,12,14,.45);
+  --font:'Onest',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --bottom-inset:max(env(safe-area-inset-bottom,0px),var(--tg-safe-area-inset-bottom,0px));
+  color-scheme:light;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font-family:var(--font);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3,p{margin:0}
+h1,h2{text-wrap:balance}
+[hidden]{display:none!important}
+.num{font-variant-numeric:tabular-nums}
+
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:16px calc(var(--bottom-inset) + 24px);display:flex;flex-direction:column;gap:12px;max-width:560px;margin-inline:auto}
+.screen{display:none}
+.screen.on{display:block}
+.note{font-size:13px;color:var(--hint);line-height:1.45}
+.sh{font-size:20px;font-weight:700;letter-spacing:-.01em;margin-top:14px}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;padding:12px 16px;border-radius:12px;
+  background:var(--accent);color:var(--on-accent);font-weight:600;font-size:16.5px;text-align:center;transition:opacity .15s,transform .15s}
+.btn:active{opacity:.85;transform:scale(.99)}
+.btn.tinted{background:var(--accent-soft);color:var(--accent-text)}
+.btn svg{width:19px;height:19px;flex:0 0 19px}
+.link{color:var(--accent-text);font-weight:500;font-size:15px;padding:8px;align-self:center}
+
+.card{background:var(--surface);border-radius:16px}
+.list{background:var(--surface);border-radius:14px;overflow:hidden}
+.row{position:relative;display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:13px 16px;width:100%;min-height:52px}
+.row + .row::before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--line)}
+button.row:active{background:var(--fill)}
+.row > div{min-width:0}
+.row .t{font-size:16px;font-weight:500;line-height:1.3}
+.row .s{font-size:13.5px;color:var(--hint);margin-top:2px;line-height:1.35}
+.chev{width:18px;height:18px;stroke:var(--hint);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.7}
+
+/* автор */
+.who{display:flex;align-items:center;gap:10px}
+.who img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+.who b{display:block;font-size:15px;font-weight:600;line-height:1.2}
+.who span{display:block;font-size:13px;color:var(--hint)}
+.who button{margin-left:auto;font-size:14px;font-weight:500;color:var(--accent-text);padding:6px 2px}
+
+/* старт */
+.hero{padding:20px 16px 16px;display:flex;flex-direction:column;gap:12px}
+.hero h1{font-size:30px;font-weight:800;letter-spacing:-.025em;line-height:1.08}
+.hero p{font-size:16px;color:var(--hint)}
+.scale{padding:14px 16px 6px}
+.scale-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
+.scale-head b{font-size:15px;font-weight:600}
+.scale-head span{font-size:12.5px;color:var(--hint);white-space:nowrap}
+.bar-row{display:grid;grid-template-columns:auto 1fr 44px;align-items:center;gap:10px;padding:7px 0}
+.bar-row + .bar-row{border-top:1px solid var(--line)}
+.bar-row .l{font-size:14.5px;min-width:96px;white-space:nowrap}
+.bar-row .track{height:8px;border-radius:4px;background:var(--fill);overflow:hidden}
+.bar-row .track i{display:block;height:100%;border-radius:4px;background:var(--accent)}
+.bar-row .track i.g{background:var(--good)}
+.bar-row .r{font-size:15px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.bar-row .r.g{color:var(--good)}
+
+/* вопросы */
+.top{display:flex;align-items:center;gap:12px;margin-top:4px}
+.progress{flex:1;height:4px;border-radius:2px;background:var(--fill);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);border-radius:2px;transition:width .3s ease}
+.top span{font-size:13.5px;color:var(--hint);font-variant-numeric:tabular-nums}
+.q h2{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.15;margin:14px 0 4px}
+.q .hint{font-size:14.5px;color:var(--hint);margin-bottom:6px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:14px 16px;border-radius:14px;background:var(--surface);font-size:17px;font-weight:500;transition:background .15s}
+.opt:active,.opt.picked{background:var(--accent-soft)}
+.opt small{display:block;font-size:13.5px;font-weight:400;color:var(--hint);margin-top:2px}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.grid5 .opt{justify-content:center;font-size:20px;font-weight:700;padding:16px 0;min-height:64px}
+
+/* результат */
+.res{padding:18px 16px 16px}
+.tag{display:inline-flex;font-size:13px;font-weight:500;color:var(--accent-text);background:var(--accent-soft);padding:4px 10px;border-radius:20px}
+.rate-l{font-size:15px;color:var(--hint);margin-top:14px}
+.rate{font-size:72px;font-weight:800;letter-spacing:-.04em;line-height:.95;font-variant-numeric:tabular-nums;margin-top:4px}
+.rate small{font-size:36px;font-weight:700;letter-spacing:-.02em}
+.mix{font-size:13.5px;color:var(--hint);margin-top:6px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.kpi{background:var(--bg);border-radius:12px;padding:10px 12px;min-width:0}
+.kpi span{display:block;font-size:12.5px;color:var(--hint)}
+.kpi b{display:block;font-size:19px;font-weight:700;letter-spacing:-.01em;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ctrl{margin-top:16px}
+.ctrl-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:2px}
+.ctrl-top label{font-size:15px;color:var(--hint)}
+.ctrl-top output{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.ctrl-top output small{font-weight:400;color:var(--hint)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:32px;background:transparent;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--accent) var(--p,50%),var(--fill) var(--p,50%))}
+input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(--fill)}
+input[type=range]::-moz-range-progress{height:4px;border-radius:2px;background:var(--accent)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-11px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25),0 0 0 .5px rgba(0,0,0,.08)}
+input[type=range]::-moz-range-thumb{width:24px;height:24px;border:0;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+
+.levers{display:flex;flex-direction:column;gap:8px}
+.lever{background:var(--surface);border-radius:14px;padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:start}
+.lever .t{font-size:16px;font-weight:600;line-height:1.3}
+.lever .s{font-size:13.5px;color:var(--hint);line-height:1.4;grid-column:1}
+.lever .r{grid-row:1 / span 2;grid-column:2;text-align:right}
+.lever .r b{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--good);font-variant-numeric:tabular-nums;line-height:1.1}
+.lever .r span{display:block;font-size:13px;font-weight:600;color:var(--good);margin-top:2px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.lever .r.n b,.lever .r.n span{color:var(--text)}
+.lever .r.n span{font-weight:500;color:var(--hint)}
+.lever.best{box-shadow:inset 0 0 0 1.5px var(--good)}
+.best-tag{display:inline-block;font-size:12px;font-weight:600;color:var(--good);background:var(--good-soft);padding:2px 8px;border-radius:10px;margin-bottom:4px}
+.cta{position:sticky;bottom:0;z-index:5;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(var(--bottom-inset) + 10px) max(16px,env(safe-area-inset-left,0px));
+  background:linear-gradient(to top,var(--bg) 70%,rgba(241,242,244,0))}
+.sent{display:none;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:12px;background:var(--surface);font-size:14px;color:var(--hint)}
+.sent.on{display:flex}
+.sent svg{width:20px;height:20px;flex:0 0 20px;stroke:var(--good);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* шторка */
+.sheet-wrap{position:fixed;inset:0;z-index:50;background:var(--overlay);opacity:0;pointer-events:none;transition:opacity .25s ease}
+.sheet-wrap.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--surface);border-radius:16px 16px 0 0;max-height:88%;overflow-y:auto;
+  padding:8px max(16px,env(safe-area-inset-right,0px)) calc(var(--bottom-inset) + 16px) max(16px,env(safe-area-inset-left,0px));
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.sheet-wrap.on .sheet{transform:none}
+.sheet > *{max-width:560px;margin-inline:auto}
+.handle{width:36px;height:5px;border-radius:3px;background:var(--fill);margin:0 auto 14px}
+.sheet h3{font-size:21px;font-weight:700;letter-spacing:-.01em;margin-bottom:10px}
+.sheet ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:15px;line-height:1.45}
+.sheet .note{margin-top:12px}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.shots img{width:100%;border-radius:10px;border:1px solid var(--line)}
+.sheet .btn{margin-top:16px}
+
+.toast{position:fixed;left:50%;bottom:calc(var(--bottom-inset) + 88px);transform:translate(-50%,12px);opacity:0;z-index:70;
+  background:var(--text);color:var(--bg);font-size:14px;font-weight:500;padding:10px 16px;border-radius:10px;pointer-events:none;transition:all .2s ease;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+
+<!-- СТАРТ -->
+<section class="screen on" id="sStart">
+  <div class="pad">
+    <div class="who">
+      <img src="img/avatar.jpg" alt="Людмила Тихонова">
+      <div><b>Людмила Тихонова</b><span>Агент по новостройкам, 18 лет</span></div>
+      <button data-sheet="about">Отзывы</button>
+    </div>
+    <div class="card hero">
+      <h1>Какая ставка по ипотеке будет у вас</h1>
+      <p>С 1 октября она зависит от числа детей. Узнайте свою и как её снизить.</p>
+      <button class="btn" id="goStart">Узнать за 30 секунд</button>
+    </div>
+    <div class="card scale">
+      <div class="scale-head"><b>Семейная ипотека, СПб и Ленобласть</b><span>с 01.10.2026</span></div>
+      <div id="scaleRows"></div>
+    </div>
+    <p class="note">Условия программы по данным ДОМ.РФ. Ставка субсидируется первые 15 лет.</p>
+  </div>
+</section>
+
+<!-- ВОПРОСЫ -->
+<section class="screen" id="sQ">
+  <div class="pad">
+    <div class="top"><div class="progress"><i id="qBar"></i></div><span id="qCount">1 из 4</span></div>
+
+    <div class="q" data-q="type">
+      <h2>Что покупаете?</h2>
+      <div class="opts">
+        <button class="opt" data-v="flat">Квартиру<svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="opt" data-v="house"><span>Дом с участком<small>или строю сам (ИЖС)</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      </div>
+    </div>
+
+    <div class="q" data-q="young">
+      <h2>Есть ребёнок младше 7 лет?</h2>
+      <p class="hint">Главное условие семейной ипотеки.</p>
+      <div class="opts">
+        <button class="opt" data-v="yes">Да<svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="opt" data-v="no">Нет<svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      </div>
+    </div>
+
+    <div class="q" data-q="kids">
+      <h2>Сколько всего детей в семье?</h2>
+      <p class="hint">Каждый ребёнок снижает ставку на 2%.</p>
+      <div class="grid5">
+        <button class="opt" data-v="1">1</button><button class="opt" data-v="2">2</button><button class="opt" data-v="3">3</button><button class="opt" data-v="4">4</button><button class="opt" data-v="5">5+</button>
+      </div>
+    </div>
+
+    <div class="q" data-q="region">
+      <h2>Где покупаете?</h2>
+      <div class="opts">
+        <button class="opt" data-v="spb">Петербург или Ленобласть<svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="opt" data-v="msk">Москва или Подмосковье<svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="opt" data-v="other"><span>Другой регион<small>Калининград, юг, Карелия и др.</small></span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- РЕЗУЛЬТАТ -->
+<section class="screen" id="sRes">
+  <div class="pad">
+    <div class="card res">
+      <span class="tag" id="rTag">Семейная ипотека</span>
+      <p class="rate-l">Ваша ставка</p>
+      <div class="rate"><span id="rRate">12</span><small>%</small></div>
+      <p class="mix" id="rMix"></p>
+      <div class="kpis">
+        <div class="kpi"><span>Платёж в месяц</span><b id="rPay">0 ₽</b></div>
+        <div class="kpi"><span>Нужный доход семьи</span><b id="rInc">0 ₽</b></div>
+      </div>
+      <div class="ctrl">
+        <div class="ctrl-top"><label for="cPrice">Стоимость</label><output id="oPrice"></output></div>
+        <input type="range" id="cPrice" min="3" max="30" step="0.5" value="10">
+      </div>
+      <div class="ctrl">
+        <div class="ctrl-top"><label for="cDown">Первый взнос</label><output id="oDown"></output></div>
+        <input type="range" id="cDown" min="0" max="90" step="5" value="20">
+      </div>
+    </div>
+
+    <h2 class="sh" id="levTitle">Как снизить ставку</h2>
+    <div class="levers" id="levers"></div>
+
+    <div class="sent" id="sent"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Чат с Людмилой открыт, заявка с расчётом в поле сообщения. Если текст не подставился, он скопирован.</span></div>
+    <button class="link" data-sheet="how">Как мы считали</button>
+
+    <div class="cta"><button class="btn" id="ctaBtn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 4.2 2.9 11.3c-1.3.5-1.2 1.3-.2 1.6l4.7 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.5-1.4ZM9 14l9.2-5.8c.4-.3.8-.1.5.2l-7.6 6.9-.3 3.2L9 14Z"/></svg><span id="ctaText">Хочу ставку ниже</span></button></div>
+  </div>
+</section>
+
+<div class="sheet-wrap" id="shHow">
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Как мы считали">
+    <div class="handle"></div>
+    <h3>Как мы считали</h3>
+    <ul>
+      <li>Семейная ипотека с 01.10.2026: в СПб, ЛО, Москве и МО 12, 10, 8, 6 и 4% для 1–5+ детей, лимит 12, 15 и 18 млн ₽. В других регионах 10, 8, 6, 4 и 2%, лимит 6, 8 и 10 млн ₽.</li>
+      <li>6%, если взнос от 50% или половина кредита погашена в первый год. На дом (ИЖС) 6% без привязки к детям.</li>
+      <li>Сумма сверх лимита считается по рыночной ставке около 21%: это средняя ставка на новостройки в октябре 2026 года.</li>
+      <li>Срок 30 лет, платёж аннуитетный. Льготная ставка действует первые 15 лет.</li>
+      <li>Нужный доход: банки хотят, чтобы платёж был не больше половины дохода семьи.</li>
+      <li>Программы застройщиков: 9% на 30 лет для семей с одним ребёнком и 12,49% на весь срок для всех покупателей. Это реальные предложения октября 2026, условия у каждого застройщика свои.</li>
+      <li>Цена метра: около 362 тыс. ₽ в Петербурге внутри КАД и около 222 тыс. ₽ за КАД.</li>
+    </ul>
+    <p class="note">Расчёт ориентировочный. Точную ставку и одобрение Людмила проверит под вашу ситуацию.</p>
+  </div>
+</div>
+
+<div class="sheet-wrap" id="shAbout">
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Людмила Тихонова">
+    <div class="handle"></div>
+    <div class="who"><img src="img/avatar.jpg" alt="Людмила Тихонова"><div><b>Людмила Тихонова</b><span>Новостройки, ипотека, сопровождение сделки</span></div></div>
+    <p style="font-size:15px;margin-top:12px">18 лет на рынке. Помогает с одобрением, если вы ИП, самозанятый или у вас доход без 2-НДФЛ. Комиссию платит застройщик.</p>
+    <div class="shots">
+      <img src="img/r1.jpg" alt="Отзыв клиента" loading="lazy"><img src="img/r2.jpg" alt="Отзыв клиента" loading="lazy">
+      <img src="img/r3.jpg" alt="Отзыв клиента" loading="lazy"><img src="img/r4.jpg" alt="Отзыв клиента" loading="lazy">
+    </div>
+    <button class="btn tinted" id="aboutDm">Написать Людмиле</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  "use strict";
+  var DM = "agent_tixonova";
+  var MARKET = 21, KEY_DATE = "01.10.2026";
+  var CAP = { rates:[12,10,8,6,4], limits:[12,15,18,18,18] };      // СПб, ЛО, Москва, МО
+  var REG = { rates:[10,8,6,4,2], limits:[6,8,10,10,10] };          // остальные регионы
+  var SQM_IN = 362000, SQM_OUT = 222000;
+
+  var tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+  var inTg = !!(tg && tg.platform && tg.platform !== "unknown");
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function ver(v){ try { return inTg && tg.isVersionAtLeast(v); } catch(e){ return false; } }
+  function haptic(k){ try { if (inTg && tg.HapticFeedback){ if (k==="ok") tg.HapticFeedback.notificationOccurred("success"); else if (k==="sel") tg.HapticFeedback.selectionChanged(); else tg.HapticFeedback.impactOccurred("light"); } } catch(e){} }
+  if (inTg){
+    try {
+      tg.ready(); tg.expand();
+      if (ver("6.1")){ tg.setHeaderColor("#F1F2F4"); tg.setBackgroundColor("#F1F2F4"); }
+      if (ver("7.10") && tg.setBottomBarColor) tg.setBottomBarColor("#F1F2F4");
+      if (ver("7.7") && tg.disableVerticalSwipes) tg.disableVerticalSwipes();
+    } catch(e){}
+  }
+  var $ = function(id){ return document.getElementById(id); };
+  var fmt = function(n){ return (Math.round(n/100)*100).toLocaleString("ru-RU").replace(/[  ,]/g," "); };
+  var rub = function(n){ return fmt(n) + " ₽"; };
+  var mln = function(n){ return (n/1e6).toLocaleString("ru-RU",{maximumFractionDigits:1}) + " млн ₽"; };
+  var pct = function(n){ return String(n).replace(".", ","); };
+  function ann(S, rate, n){ if (S <= 0) return 0; var r = rate/1200; return r < 1e-7 ? S/n : S*r/(1-Math.pow(1+r,-n)); }
+  var toastEl = $("toast"), toastT;
+  function toast(t){ toastEl.textContent = t; toastEl.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove("on"); }, 2400); }
+  function openTg(url){
+    if (inTg && tg.openTelegramLink){ try { tg.openTelegramLink(url); return; } catch(e){} }
+    var a = document.createElement("a"); a.href = url; a.target = "_blank"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
+  }
+  function sendToDm(text){ try { navigator.clipboard && navigator.clipboard.writeText(text).catch(function(){}); } catch(e){} openTg("https://t.me/" + DM + "?text=" + encodeURIComponent(text)); }
+
+  /* Шкала на старте */
+  (function(){
+    var rows = [["1 ребёнок",12],["2 детей",10],["3 детей",8],["4 детей",6],["5 и больше",4]], h = "";
+    rows.forEach(function(r){ h += '<div class="bar-row"><span class="l">'+r[0]+'</span><span class="track"><i style="width:'+(r[1]/12*100)+'%"></i></span><span class="r">'+r[1]+'%</span></div>'; });
+    h += '<div class="bar-row"><span class="l">Взнос от 50%</span><span class="track"><i class="g" style="width:50%"></i></span><span class="r g">6%</span></div>';
+    h += '<div class="bar-row"><span class="l">Дом, ИЖС</span><span class="track"><i class="g" style="width:50%"></i></span><span class="r g">6%</span></div>';
+    $("scaleRows").innerHTML = h;
+  })();
+
+  /* Экраны и вопросы */
+  var screens = { start:$("sStart"), q:$("sQ"), res:$("sRes") }, cur = "start";
+  var qs = Array.prototype.slice.call(document.querySelectorAll(".q")), A = {}, path = [], qi = 0;
+  function show(name){ Object.keys(screens).forEach(function(k){ screens[k].classList.toggle("on", k === name); }); cur = name; window.scrollTo(0,0); syncBack(); }
+  function flow(){ var f = ["type","young"]; if (A.young === "yes") f.push("kids"); f.push("region"); return f; }
+  function showQ(){
+    var f = flow(), id = f[qi];
+    qs.forEach(function(q){ q.style.display = q.dataset.q === id ? "" : "none"; q.querySelectorAll(".opt").forEach(function(o){ o.classList.toggle("picked", A[q.dataset.q] === o.dataset.v); }); });
+    $("qCount").textContent = (qi+1) + " из " + f.length;
+    $("qBar").style.width = ((qi+1)/f.length*100) + "%";
+    show("q");
+  }
+  $("goStart").addEventListener("click", function(){ haptic(); qi = 0; showQ(); });
+  qs.forEach(function(q){
+    q.querySelectorAll(".opt").forEach(function(o){
+      o.addEventListener("click", function(){
+        A[q.dataset.q] = o.dataset.v; o.classList.add("picked"); haptic("sel");
+        setTimeout(function(){
+          var f = flow();
+          if (qi >= f.length - 1){ setDefaults(); calc(); show("res"); haptic("ok"); }
+          else { qi++; showQ(); }
+        }, reduced ? 0 : 140);
+      });
+    });
+  });
+
+  /* Назад */
+  var sheets = [$("shHow"), $("shAbout")];
+  function openSheet(el){ el.classList.add("on"); syncBack(); }
+  function closeSheets(){ sheets.forEach(function(s){ s.classList.remove("on"); }); syncBack(); }
+  function sheetOpen(){ return sheets.some(function(s){ return s.classList.contains("on"); }); }
+  function back(){
+    if (sheetOpen()) return closeSheets();
+    if (cur === "res"){ qi = flow().length - 1; showQ(); return; }
+    if (cur === "q"){ if (qi > 0){ qi--; showQ(); } else show("start"); }
+  }
+  function syncBack(){ if (!inTg || !tg.BackButton || !ver("6.1")) return; try { (sheetOpen() || cur !== "start") ? tg.BackButton.show() : tg.BackButton.hide(); } catch(e){} }
+  if (inTg && tg.BackButton){ try { tg.BackButton.onClick(function(){ haptic(); back(); }); } catch(e){} }
+  document.querySelectorAll("[data-sheet]").forEach(function(b){ b.addEventListener("click", function(){ haptic(); openSheet(b.dataset.sheet === "how" ? $("shHow") : $("shAbout")); }); });
+  sheets.forEach(function(s){ s.addEventListener("click", function(e){ if (e.target === s) closeSheets(); }); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape") back(); });
+  $("aboutDm").addEventListener("click", function(){ haptic(); sendToDm("Здравствуйте, Людмила! Пишу из приложения про ипотеку. "); });
+
+  /* Расчёт */
+  var cPrice = $("cPrice"), cDown = $("cDown"), last = null;
+  function setDefaults(){ cPrice.value = A.region === "other" ? 6 : (A.region === "msk" ? 14 : 10); cDown.value = 20; }
+  function fill(r){ r.style.setProperty("--p", ((r.value - r.min)/(r.max - r.min)*100) + "%"); }
+  // Ставка и лимит для сценария
+  function program(o){
+    // o: {house, family, kids, region, downP}
+    var t = o.region === "other" ? REG : CAP, k = Math.min(Math.max(o.kids,1),5) - 1;
+    if (!o.family) return { name:"Рыночная ипотека", rate:MARKET, limit:Infinity };
+    var lim = t.limits[k]*1e6;
+    if (o.house) return { name:"Семейная ипотека на дом", rate:6, limit:lim };
+    var r = t.rates[k];
+    if (o.downP >= 50 && r > 6) return { name:"Семейная ипотека, взнос от 50%", rate:6, limit:lim };
+    return { name:"Семейная ипотека", rate:r, limit:lim };
+  }
+  function payFor(price, downP, prog){
+    var S = price*(1 - downP/100), n = 360, inLim = Math.min(S, prog.limit), over = Math.max(0, S - prog.limit);
+    var p = ann(inLim, prog.rate, n) + ann(over, MARKET, n);
+    var eff = S > 0 ? (over > 0 ? (prog.rate*inLim + MARKET*over)/S : prog.rate) : prog.rate;
+    return { pay:p, S:S, over:over, eff:eff };
+  }
+  function kidsWord(k){ return k >= 5 ? "5+ детей" : (k === 1 ? "1 ребёнок" : k + " детей"); }
+  function regionWord(r){ return r === "spb" ? "СПб и ЛО" : (r === "msk" ? "Москва и МО" : "регион"); }
+
+  function calc(){
+    [cPrice, cDown].forEach(fill);
+    var price = +cPrice.value*1e6, downP = +cDown.value, down = price*downP/100;
+    var house = A.type === "house", family = A.young === "yes", kids = family ? +A.kids : 0, region = A.region;
+    var base = { house:house, family:family, kids:kids, region:region, downP:downP };
+    var prog = program(base), now = payFor(price, downP, prog);
+
+    $("oPrice").textContent = mln(price);
+    $("oDown").innerHTML = downP + "% <small>· " + mln(down) + "</small>";
+    $("rTag").textContent = prog.name + (family && !house ? " · " + kidsWord(kids) : "") + " · " + regionWord(region);
+    $("rRate").textContent = pct(Math.round(now.eff*10)/10);
+    $("rMix").textContent = now.over > 0 ? (pct(prog.rate) + "% на " + mln(prog.limit) + " и " + MARKET + "% на остаток " + mln(now.over)) : (now.S <= 0 ? "Взнос покрывает всю стоимость" : (family ? "Льготная ставка на первые 15 лет" : "Средняя рыночная ставка, октябрь 2026"));
+    $("rPay").textContent = rub(now.pay);
+    $("rInc").textContent = "от " + rub(now.pay*2);
+
+    // Рычаги
+    var L = [];
+    function lever(title, sub, rate, pay, extra, cond){ var d = now.pay - pay; L.push({ t:title, s:sub, rate:rate, pay:pay, d:d, extra:extra||"", cond:!!cond }); }
+    if (family){
+      if (!house && prog.rate > 6 && downP < 50){
+        var p50 = payFor(price, 50, program({house:false,family:true,kids:kids,region:region,downP:50}));
+        lever("Взнос от 50%", "Нужно ещё " + mln(price*0.5 - down) + ". Или погасить половину кредита в первый год", 6, p50.pay);
+      }
+      if (!house && prog.rate > 6){
+        var ph = payFor(price, downP, program({house:true,family:true,kids:kids,region:region,downP:downP}));
+        lever("Дом вместо квартиры", "На ИЖС 6% при любом числе детей", 6, ph.pay);
+      }
+      if (!house && kids === 1 && prog.rate > 9){
+        var pd = payFor(price, downP, { rate:9, limit:prog.limit });
+        lever("Программа застройщика", "9% на 30 лет для семей с одним ребёнком, есть у части застройщиков", 9, pd.pay);
+      }
+    } else {
+      var pl = payFor(price, downP, { rate:12.49, limit:Infinity });
+      lever("Программа застройщика", "12,49% на весь срок для всех покупателей, есть у части застройщиков", 12.49, pl.pay);
+      if (region === "spb"){
+        var pit = payFor(price, downP, { rate:6, limit:9e6 });
+        lever("IT-ипотека в Ленобласти", "Если работаете в аккредитованной IT-компании, зарплата от 150 тыс. ₽. 6% на сумму до 9 млн ₽", 6, pit.pay, "", true);
+      }
+      lever("Рассрочка застройщика", "Без банка и процентов в период стройки. Сейчас так проходит около половины сделок", null, null, "без %");
+    }
+    if (region === "spb" && !house){
+      var mIn = price/SQM_IN, mOut = price/SQM_OUT;
+      L.push({ t:"Ленобласть за КАД", s:"За те же " + mln(price) + " примерно " + Math.round(mIn) + " м² в городе или " + Math.round(mOut) + " м² за КАД", rate:null, pay:null, d:0, extra:"+" + Math.round((mOut/mIn-1)*100) + "% м²" });
+    }
+
+    // лучший по экономии
+    var best = -1, bestD = 0;
+    L.forEach(function(l, i){ if (l.pay !== null && !l.cond && l.d > bestD){ bestD = l.d; best = i; } });
+    var h = "";
+    L.forEach(function(l, i){
+      var right;
+      if (l.pay !== null){
+        right = '<div class="r"><b>' + pct(l.rate) + '%</b><span>' + (l.d > 0 ? "−" + rub(l.d) + "/мес" : rub(l.pay) + "/мес") + '</span></div>';
+      } else right = '<div class="r"><b>' + l.extra + '</b></div>';
+      h += '<div class="lever' + (i === best ? ' best' : '') + '"><div>' + (i === best ? '<span class="best-tag">Больше всего экономии</span>' : '') + '<div class="t">' + l.t + '</div></div>' + right + '<div class="s">' + l.s + '</div></div>';
+    });
+    $("levers").innerHTML = h;
+    $("levTitle").textContent = family ? (prog.rate > 6 ? "Как снизить ставку" : "Что ещё можно сделать") : "Как платить меньше";
+    $("levTitle").hidden = !L.length;
+    $("ctaText").textContent = (family && prog.rate <= 6) ? "Подобрать варианты под 6%" : "Хочу ставку ниже";
+
+    last = { price:price, downP:downP, prog:prog, cur:now, best: best >= 0 ? L[best] : null };
+  }
+  [cPrice, cDown].forEach(function(r){ r.addEventListener("input", calc); r.addEventListener("change", function(){ haptic("sel"); }); });
+
+  $("ctaBtn").addEventListener("click", function(){
+    if (!last) return;
+    var typeW = A.type === "house" ? "дом (ИЖС)" : "квартиру";
+    var lines = ["Здравствуйте, Людмила! Посчитал(а) ипотеку в приложении.",
+      "Покупаю: " + typeW + ", " + regionWord(A.region),
+      "Дети: " + (A.young === "yes" ? kidsWord(+A.kids) + ", есть младше 7 лет" : "нет детей младше 7 лет"),
+      "Стоимость: " + mln(last.price) + ", взнос " + last.downP + "%",
+      "Моя ставка: " + pct(Math.round(last.cur.eff*10)/10) + "%, платёж ≈ " + rub(last.cur.pay)];
+    if (last.best) lines.push("Интересно: " + last.best.t.toLowerCase() + " (" + pct(last.best.rate) + "%)");
+    lines.push("Подберите, пожалуйста, варианты со ставкой ниже.");
+    haptic("ok"); sendToDm(lines.join("\n")); $("sent").classList.add("on"); toast("Открываем чат с Людмилой");
+  });
+})();
+</script>
+
+</body>
+</html>
