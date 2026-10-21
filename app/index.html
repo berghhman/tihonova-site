@@ -1,638 +1,493 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#0B1116">
+<meta name="theme-color" content="#F1F2F4">
+<meta name="color-scheme" content="light">
 <meta name="format-detection" content="telephone=no">
 <script src="https://telegram.org/js/telegram-web-app.js?59"></script>
 <title>Людмила Тихонова</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Prata&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap">
 <style>
-/* Мини-апп: тёмный «вечерний фасад» сайта, одна колонка, нижнее меню из пяти разделов */
+/* Нативный стиль Telegram: сгруппированные списки на светлом сером фоне, нижнее меню, шторки. Всегда светлая тема */
 :root{
-  --ink:#0B1116; --ink-2:#111A21; --ink-3:#16222B;
-  --line:#243640; --line-soft:#1B2830;
-  --chalk:#E9EFF3; --mute:#8CA0AD; --mute-2:#5F7583;
-  --amber:#E9A23B; --amber-dim:#B87C28; --amber-glow:rgba(233,162,59,.16);
-  --paper:#E2E8EB; --paper-2:#D5DEE2; --paper-ink:#132029; --paper-mute:#4E626E;
-  --ok:#7FBF9A;
-  --serif:'Prata',"Times New Roman",Georgia,serif;
-  --sans:'Golos Text','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
-  --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
-  --tab-h:62px;
+  --bg:#F1F2F4; --surface:#FFFFFF; --fill:#E6E8EB; --seg-on:#FFFFFF;
+  --text:#121417; --hint:#6B727B; --line:rgba(18,20,23,.09);
+  --accent:#E09A3E; --on-accent:#1C1408; --accent-text:#94561A; --accent-soft:rgba(224,154,62,.15); --accent-2:#F1CFA0;
+  --ok:#2E9E5B; --photo:#DCE2E7; --overlay:rgba(10,12,14,.45);
+  --font:'Onest',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --tab-h:58px;
   --bottom-inset:max(env(safe-area-inset-bottom,0px),var(--tg-safe-area-inset-bottom,0px));
-  color-scheme:dark;
+  color-scheme:light;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--ink);color:var(--chalk)}
-body{font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;
-  padding-bottom:calc(var(--tab-h) + var(--bottom-inset) + 8px)}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font-family:var(--font);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  padding-bottom:calc(var(--tab-h) + var(--bottom-inset) + 12px)}
 img{max-width:100%;display:block}
-button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
-a{color:inherit}
-:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
-h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance}
-p{margin:0}
-.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);
-  display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.eyebrow::after{content:"";flex:1;height:1px;background:var(--line);max-width:90px}
-h2{font-size:27px;line-height:1.14;letter-spacing:-.01em}
-.lede{color:var(--mute);font-size:15px;margin-top:10px}
-.sec{padding-block:34px}
-.sec + .sec{border-top:1px solid var(--line-soft)}
-.num{font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+a{color:var(--accent-text)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{text-wrap:balance}
+
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 8px;
+  display:flex;flex-direction:column;gap:12px}
+.lt{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-top:6px}
+.sub{color:var(--hint);font-size:15px}
+.sh{font-size:20px;font-weight:700;letter-spacing:-.01em;margin-top:18px}
+.foot-note{font-size:13px;color:var(--hint);line-height:1.45}
+.screen{display:none}
+.screen.on{display:block}
 
 /* кнопки */
-.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;padding:12px 18px;
-  background:var(--amber);color:#0B1116;font-weight:600;font-size:15.5px;border:1px solid var(--amber);transition:transform .15s ease,background .2s ease}
-.btn:active{transform:scale(.985)}
-.btn.ghost{background:transparent;color:var(--chalk);border-color:var(--line)}
-.btn.ghost:active{background:var(--ink-3)}
-.btn svg{width:18px;height:18px;flex:0 0 18px}
-.row-btns{display:grid;grid-template-columns:1.5fr 1fr;gap:10px}
-.row-btns .btn{white-space:nowrap;padding-inline:12px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:50px;padding:12px 16px;border-radius:12px;
+  background:var(--accent);color:var(--on-accent);font-weight:600;font-size:16px;text-align:center;transition:opacity .15s,transform .15s}
+.btn:active{opacity:.85;transform:scale(.99)}
+.btn.tinted{background:var(--accent-soft);color:var(--accent-text)}
+.btn svg{width:19px;height:19px;flex:0 0 19px}
+.text-btn{color:var(--accent-text);font-weight:500;font-size:15px;padding:10px;align-self:center}
 
-/* экраны */
-.screen{display:none;animation:fade .28s ease}
-.screen.on{display:block}
-@keyframes fade{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* карточки и списки */
+.card{background:var(--surface);border-radius:16px;overflow:hidden}
+.card.p{padding:16px}
+.list{background:var(--surface);border-radius:14px;overflow:hidden}
+.row{position:relative;display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:13px 16px;width:100%;min-height:50px}
+.row + .row::before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--line)}
+button.row:active,.tap:active{background:var(--fill)}
+.row .t{font-size:16px;font-weight:500;line-height:1.3}
+.row .s{font-size:14px;color:var(--hint);margin-top:2px;line-height:1.35}
+.row .v{font-size:16px;color:var(--hint);text-align:right;font-variant-numeric:tabular-nums}
+.row .v.strong{color:var(--text);font-weight:500}
+.row .rate{font-size:16px;font-weight:600;color:var(--accent-text);white-space:nowrap;font-variant-numeric:tabular-nums}
+.row > div{min-width:0}
+.chev{width:18px;height:18px;stroke:var(--hint);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.7}
 
-/* hero */
-.hero{position:relative;height:min(46svh,440px);min-height:290px;overflow:hidden;background:var(--ink)}
-#facade{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
-.aura{position:absolute;left:50%;top:6%;width:86vw;height:86vw;max-width:460px;max-height:460px;transform:translateX(-50%);border-radius:50%;
-  background:radial-gradient(circle,rgba(233,162,59,.34),rgba(233,162,59,.1) 44%,transparent 70%);animation:breathe 8s ease-in-out infinite}
-@keyframes breathe{0%,100%{opacity:.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.06)}}
-.hero img{position:absolute;left:50%;bottom:0;height:100%;width:auto;max-width:none;transform:translateX(-46%);
-  filter:drop-shadow(0 24px 50px rgba(0,0,0,.6));
-  -webkit-mask-image:linear-gradient(to bottom,#000 72%,rgba(0,0,0,.55) 88%,transparent 100%);mask-image:linear-gradient(to bottom,#000 72%,rgba(0,0,0,.55) 88%,transparent 100%);
-  animation:rise 1.1s cubic-bezier(.16,.84,.3,1) both}
-@keyframes rise{from{transform:translateX(-46%) translateY(18px) scale(1.04);opacity:.2}to{transform:translateX(-46%);opacity:1}}
-.hero-veil{position:absolute;inset:0;background:linear-gradient(to top,var(--ink) 2%,transparent 34%)}
-.hero-tag{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:16px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;z-index:2}
-.hero-tag b{background:var(--amber);color:#0B1116;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:7px 11px}
-.hero-tag span{background:rgba(11,17,22,.92);border:1px solid var(--line);font-family:var(--mono);font-size:10px;padding:6px 11px;color:var(--chalk)}
-.intro{padding-block:6px 26px}
-.intro h1{font-size:29px;line-height:1.08;letter-spacing:-.015em;margin:6px 0 12px}
-.intro h1 em{font-style:normal;color:var(--amber)}
-.intro .sub{color:var(--mute);font-size:15px;margin-bottom:20px}
-.note{font-family:var(--mono);font-size:11px;color:var(--mute-2);margin-top:14px;display:flex;gap:8px;align-items:center}
-.note::before{content:"";width:6px;height:6px;background:var(--ok);border-radius:50%;flex:0 0 6px}
-
-/* цифры */
-.stats{display:grid;grid-template-columns:1fr 1fr;border-block:1px solid var(--line-soft);background:var(--ink-2)}
-.stat{padding:18px 16px;border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
-.stat:nth-child(2n){border-right:0}
-.stat:nth-last-child(-n+2){border-bottom:0}
-.stat b{display:block;font-family:var(--serif);font-weight:400;font-size:28px;line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums}
-.stat b small{font-size:15px;color:var(--mute)}
-.stat span{display:block;margin-top:8px;font-size:12.5px;color:var(--mute);line-height:1.35}
-
-/* бегущая строка районов */
-.ticker{overflow:hidden;border-bottom:1px solid var(--line-soft);padding-block:11px;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.ticker-row{display:flex;gap:26px;width:max-content;animation:tick 48s linear infinite}
-.ticker-row span{font-family:var(--mono);font-size:11px;color:var(--mute-2);white-space:nowrap;display:flex;align-items:center;gap:26px}
-.ticker-row span::after{content:"";width:4px;height:4px;background:var(--amber-dim);display:block}
-@keyframes tick{to{transform:translateX(-50%)}}
-
-/* услуги — аккордеон */
-.acc{margin-top:20px;border-top:1px solid var(--line)}
-.acc-item{border-bottom:1px solid var(--line)}
-.acc-head{width:100%;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:16px 0;text-align:left}
-.acc-head .k{font-family:var(--mono);font-size:10.5px;color:var(--amber);letter-spacing:.08em;width:56px}
-.acc-head h3{font-size:18px;line-height:1.25}
-.acc-head .pm{width:22px;height:22px;border:1px solid var(--line);display:grid;place-items:center;transition:transform .3s ease,border-color .3s}
-.acc-head .pm::before{content:"+";font-family:var(--mono);font-size:14px;color:var(--mute);line-height:1}
-.acc-item.open .pm{transform:rotate(45deg);border-color:var(--amber)}
-.acc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(.2,.8,.2,1)}
-.acc-item.open .acc-body{grid-template-rows:1fr}
-.acc-body > div{overflow:hidden}
-.acc-body p{color:var(--mute);font-size:14.5px;padding:0 0 10px 70px}
-.acc-body .dim{font-family:var(--mono);font-size:11px;color:var(--amber);padding:0 0 18px 70px;display:block}
-
-/* светлая карточка «почему через меня» */
-.paper{background:var(--paper);color:var(--paper-ink);padding:22px 18px;margin-top:26px;position:relative;overflow:hidden}
-.paper::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
-  background-image:linear-gradient(rgba(19,32,41,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(19,32,41,.07) 1px,transparent 1px);background-size:26px 26px}
-.paper > *{position:relative}
-.paper h3{font-size:21px;margin-bottom:10px;color:var(--paper-ink)}
-.paper p{font-size:14.5px;color:var(--paper-mute)}
-.paper ul{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:11px}
-.paper li{display:flex;gap:11px;font-size:14.5px;line-height:1.45}
-.paper li::before{content:"";flex:0 0 7px;height:7px;background:var(--amber-dim);margin-top:7px}
-
-/* галерея */
-.gal{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin-top:20px;scrollbar-width:none;
+/* главная */
+.photo{position:relative;height:300px;background:var(--photo);overflow:hidden}
+.photo img{position:absolute;left:50%;bottom:0;height:104%;width:auto;max-width:none;transform:translateX(-46%)}
+.profile-body{padding:16px;display:flex;flex-direction:column;gap:10px}
+.profile-body h1{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.role{color:var(--hint);font-size:15px;margin-top:-6px}
+.intro{font-size:16px}
+.btns{display:grid;grid-template-columns:1.7fr 1fr;gap:8px;margin-top:4px}
+.btns .btn{white-space:nowrap;padding-inline:10px;font-size:15.5px}
+.small{font-size:13px;color:var(--hint)}
+.why h3{font-size:18px;font-weight:600;line-height:1.3;margin-bottom:8px}
+.why > p{font-size:15px;color:var(--hint)}
+.checks{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.checks li{display:grid;grid-template-columns:20px 1fr;gap:10px;font-size:15px;line-height:1.4}
+.checks svg{width:20px;height:20px;stroke:var(--accent-text);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;margin-top:1px}
+.hscroll{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));scroll-padding-left:max(16px,env(safe-area-inset-left,0px))}
-.gal::-webkit-scrollbar{display:none}
-.gal button{flex:0 0 78%;max-width:340px;scroll-snap-align:start;text-align:left}
-.gal img{aspect-ratio:4/3;width:100%;object-fit:cover;border:1px solid var(--line-soft)}
-.gal span{display:block;font-size:12.5px;color:var(--mute);margin-top:8px;line-height:1.4}
-.gal-note{font-size:12.5px;color:var(--mute-2);margin-top:12px}
+.hscroll::-webkit-scrollbar{display:none}
+.gal button{flex:0 0 76%;max-width:330px;scroll-snap-align:start}
+.gal img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px}
+.gal span{display:block;font-size:13.5px;color:var(--hint);margin-top:8px;line-height:1.35}
 
-.cta-card{border:1px solid var(--line);padding:22px 18px;background:linear-gradient(160deg,var(--ink-3),var(--ink-2));position:relative;overflow:hidden}
-.cta-card::after{content:"";position:absolute;right:-60px;top:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,var(--amber-glow),transparent 70%)}
-.cta-card h3{font-size:22px;margin-bottom:8px}
-.cta-card p{color:var(--mute);font-size:14.5px;margin-bottom:18px}
-
-/* квиз */
-.q-top{display:flex;justify-content:space-between;align-items:center;margin:22px 0 12px;font-family:var(--mono);font-size:11px;color:var(--mute-2)}
-.q-prog{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:24px}
-.q-prog i{height:3px;background:var(--line);transition:background .3s}
-.q-prog i.on{background:var(--amber)}
-.q-step{display:none}
-.q-step.on{display:block;animation:fade .28s ease}
-.q-step h3{font-size:24px;margin-bottom:18px}
-.q-opts{display:grid;gap:8px}
-.q-opt{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px;border:1px solid var(--line);background:var(--ink-2);text-align:left;font-size:15.5px;transition:border-color .2s,background .2s}
-.q-opt::after{content:"→";font-family:var(--mono);color:var(--mute-2);transition:color .2s,transform .2s}
-.q-opt:active,.q-opt.picked{border-color:var(--amber);background:var(--ink-3)}
-.q-opt.picked::after{color:var(--amber);transform:translateX(3px)}
-.q-res{display:none}
-.q-res.on{display:block;animation:fade .3s ease}
-.res-card{border:1px solid var(--amber-dim);background:linear-gradient(170deg,rgba(233,162,59,.09),transparent 60%);padding:20px 18px}
-.res-card .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
-.res-card h3{font-size:22px;margin:8px 0 12px}
-.res-card p{color:var(--mute);font-size:14.5px}
-.form{display:grid;gap:12px;margin-top:22px}
-.form h4{font-family:var(--serif);font-weight:400;font-size:19px;margin:0}
-.field label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute-2);margin-bottom:6px}
-.field input,.field textarea{width:100%;background:var(--ink-2);border:1px solid var(--line);color:var(--chalk);font:inherit;font-size:16px;padding:13px 14px;border-radius:0;outline:none;transition:border-color .2s}
-.field input:focus,.field textarea:focus{border-color:var(--amber)}
-.field textarea{min-height:76px;resize:vertical}
-.hint{font-size:12.5px;color:var(--mute-2);line-height:1.45}
-.sent{display:none;border:1px solid var(--line);padding:14px 16px;font-size:14px;color:var(--mute);gap:12px;align-items:flex-start}
+/* подбор */
+.step-meta{display:flex;justify-content:space-between;font-size:14px;color:var(--hint);margin-top:6px}
+.progress{height:4px;border-radius:2px;background:var(--fill);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);border-radius:2px;transition:width .3s ease}
+.q-step{display:none;flex-direction:column;gap:12px}
+.q-step.on{display:flex}
+.q-step h2{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-top:8px}
+.q-opt.picked{background:var(--accent-soft)}
+.q-res{display:none;flex-direction:column;gap:12px}
+.q-res.on{display:flex}
+.res .k{font-size:13px;color:var(--hint)}
+.res h3{font-size:20px;font-weight:700;margin:4px 0 8px;line-height:1.25}
+.res p{font-size:15px;line-height:1.5}
+.field{display:block;padding:11px 16px;position:relative}
+.field + .field::before{content:"";position:absolute;top:0;left:16px;right:0;height:1px;background:var(--line)}
+.field span{display:block;font-size:13px;color:var(--hint)}
+.field input,.field textarea{width:100%;border:0;outline:none;background:transparent;color:var(--text);font:inherit;font-size:17px;padding:3px 0 0;resize:none}
+.field textarea{min-height:52px}
+.field input::placeholder,.field textarea::placeholder{color:var(--hint);opacity:.7}
+.sent{display:none;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:12px;background:var(--surface);font-size:14px;color:var(--hint)}
 .sent.on{display:flex}
-.sent i{flex:0 0 22px;height:22px;border-radius:50%;background:var(--ok);display:grid;place-items:center;color:#0B1116;font-style:normal;font-size:13px;font-weight:700}
-.link-btn{font-family:var(--mono);font-size:12px;color:var(--mute);text-decoration:underline;text-underline-offset:3px;justify-self:center;padding:6px}
+.sent svg{width:20px;height:20px;flex:0 0 20px;stroke:var(--ok);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 
 /* ипотека */
-.calc{margin-top:20px;border:1px solid var(--line);background:var(--ink-2)}
-.chips{display:flex;gap:6px;padding:14px 14px 0;flex-wrap:wrap}
-.chip{padding:8px 12px;border:1px solid var(--line);font-size:13.5px;color:var(--mute);transition:all .2s}
-.chip b{font-family:var(--mono);font-weight:500;color:var(--chalk);margin-left:4px}
-.chip.on{border-color:var(--amber);color:var(--chalk);background:var(--amber-glow)}
-.ctrl{padding:16px 14px 4px}
-.ctrl-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
-.ctrl-top label{font-size:13.5px;color:var(--mute)}
-.ctrl-top output{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;color:var(--chalk);text-align:right}
-.ctrl-top output small{color:var(--mute-2)}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;margin:0}
-input[type=range]::-webkit-slider-runnable-track{height:3px;background:linear-gradient(90deg,var(--amber) var(--p,50%),var(--line) var(--p,50%))}
-input[type=range]::-moz-range-track{height:3px;background:var(--line)}
-input[type=range]::-moz-range-progress{height:3px;background:var(--amber)}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-9.5px;background:var(--ink);border:2px solid var(--amber);border-radius:50%}
-input[type=range]::-moz-range-thumb{width:18px;height:18px;background:var(--ink);border:2px solid var(--amber);border-radius:50%}
-.rate-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 14px 0}
-.rate-row .field input{padding:10px 12px;font-family:var(--mono);font-size:15px}
-.rate-row .field[hidden]{display:none}
-.warn{margin:12px 14px 0;font-size:12.5px;color:var(--amber);line-height:1.45}
-.result{margin-top:16px;border-top:1px solid var(--line);padding:18px 14px}
-.result .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute-2)}
-.pay{font-family:var(--serif);font-size:40px;line-height:1.05;margin:6px 0 4px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.pay small{font-size:18px;color:var(--mute)}
-.pay-split{font-size:12.5px;color:var(--mute);min-height:1em}
-.bar{display:flex;height:8px;margin:16px 0 8px;background:var(--line)}
-.bar i{display:block;background:var(--chalk);transition:width .3s ease}
-.bar i + i{background:var(--amber)}
-.legend{display:flex;justify-content:space-between;font-size:12px;color:var(--mute)}
+.calc{padding:14px 16px 16px;display:flex;flex-direction:column;gap:16px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--fill);border-radius:10px;padding:2px}
+.seg button{padding:8px 4px;border-radius:8px;font-size:14px;font-weight:500;text-align:center;transition:background .2s}
+.seg button.on{background:var(--seg-on);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.ctrl-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:4px}
+.ctrl-top label{font-size:15px;color:var(--hint)}
+.ctrl-top output{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.ctrl-top output small{font-weight:400;color:var(--hint)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:30px;background:transparent;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--accent) var(--p,50%),var(--fill) var(--p,50%))}
+input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(--fill)}
+input[type=range]::-moz-range-progress{height:4px;border-radius:2px;background:var(--accent)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-11px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25),0 0 0 .5px rgba(0,0,0,.08)}
+input[type=range]::-moz-range-thumb{width:24px;height:24px;border:0;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.rates{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rate-box{background:var(--bg);border-radius:10px;padding:8px 12px}
+.rate-box[hidden]{display:none}
+.rate-box label{display:block;font-size:12.5px;color:var(--hint)}
+.rate-box input{width:100%;border:0;outline:none;background:transparent;color:var(--text);font:inherit;font-size:17px;font-weight:500;padding:2px 0 0;font-variant-numeric:tabular-nums}
+.warn{font-size:13.5px;color:var(--accent-text);line-height:1.4}
+.result{padding:16px}
+.result .k{font-size:14px;color:var(--hint)}
+.pay{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pay small{font-size:17px;font-weight:500;color:var(--hint)}
+.pay-split{font-size:13px;color:var(--hint);margin-top:4px}
+.bar{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:16px 0 8px;background:var(--fill)}
+.bar i{display:block;background:var(--accent);transition:width .3s ease}
+.bar i + i{background:var(--accent-2)}
+.legend{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--hint)}
 .legend span{display:flex;align-items:center;gap:6px}
-.legend span::before{content:"";width:8px;height:8px;background:var(--chalk)}
-.legend span + span::before{background:var(--amber)}
-.facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-top:16px}
-.facts div{background:var(--ink-2);padding:12px}
-.facts b{display:block;font-family:var(--mono);font-weight:500;font-size:14.5px;font-variant-numeric:tabular-nums}
-.facts span{font-size:12px;color:var(--mute)}
-.result .btn{margin-top:16px}
-.progs{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-top:20px}
-.prog{background:var(--ink);padding:18px 16px;display:grid;grid-template-columns:86px 1fr;gap:14px;align-items:start}
-.prog b{font-family:var(--serif);font-weight:400;font-size:24px;color:var(--amber);line-height:1.1;font-variant-numeric:tabular-nums}
-.prog h3{font-family:var(--sans);font-weight:600;font-size:15.5px;margin-bottom:5px}
-.prog p{font-size:13.5px;color:var(--mute);line-height:1.5}
-.disc{font-size:12.5px;color:var(--mute-2);margin-top:16px;line-height:1.5}
+.legend span::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--accent)}
+.legend span + span::before{background:var(--accent-2)}
+.result .list{background:var(--bg);margin-top:14px}
+.result .btn{margin-top:14px}
 
 /* кейсы и отзывы */
-.cases{display:grid;gap:12px;margin-top:20px}
-.case{border:1px solid var(--line);background:var(--ink-2);padding:20px 18px}
-.case .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
-.case .big{font-family:var(--serif);font-size:38px;line-height:1;margin:12px 0 6px;font-variant-numeric:tabular-nums}
-.case .cap{font-size:13px;color:var(--mute)}
-.case .where{font-family:var(--mono);font-size:11px;color:var(--mute-2);margin:14px 0 10px;padding-top:12px;border-top:1px dashed var(--line)}
-.case p{font-size:14.5px;color:var(--mute)}
-.case p + p{margin-top:8px}
-.case p.punch{color:var(--chalk)}
-.quotes{display:grid;gap:12px;margin-top:20px}
-.quote{border-left:2px solid var(--amber);padding:2px 0 2px 16px}
-.quote p{font-family:var(--serif);font-size:17px;line-height:1.45}
-.quote cite{display:block;margin-top:8px;font-family:var(--mono);font-style:normal;font-size:11px;color:var(--mute-2)}
-.shots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:20px}
-.shots button{position:relative;border:1px solid var(--line);overflow:hidden}
-.shots img{aspect-ratio:452/620;width:100%;object-fit:cover}
-.shots-cap{font-size:12.5px;color:var(--mute-2);margin-top:10px}
-.trust{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-top:20px}
-.trust div{background:var(--ink);padding:16px}
-.trust b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
-.trust p{font-size:14px;color:var(--mute)}
+.case{padding:16px;display:flex;flex-direction:column;gap:8px}
+.chip{align-self:flex-start;font-size:13px;font-weight:500;color:var(--accent-text);background:var(--accent-soft);padding:4px 10px;border-radius:20px}
+.case h3{font-size:18px;font-weight:600;line-height:1.3}
+.case .res-line{font-size:16px;font-weight:600}
+.case p{font-size:15px;color:var(--hint);line-height:1.5}
+.shots button{flex:0 0 46%;max-width:200px;scroll-snap-align:start;border-radius:12px;overflow:hidden;background:var(--surface)}
+.shots img{width:100%;aspect-ratio:452/620;object-fit:cover}
+.quote{padding:14px 16px}
+.quote p{font-size:15.5px;line-height:1.5}
+.quote cite{display:block;font-style:normal;font-size:13px;color:var(--hint);margin-top:8px}
 
 /* о себе */
-.me{display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:center;margin-top:22px}
-.me img{width:110px;aspect-ratio:1;object-fit:cover;border:1px solid var(--line)}
-.me b{display:block;font-family:var(--serif);font-weight:400;font-size:21px;line-height:1.2}
-.me span{display:block;font-size:13px;color:var(--mute);margin-top:4px}
-.big-quote{font-family:var(--serif);font-size:20px;line-height:1.4;border-left:2px solid var(--amber);padding:4px 0 4px 16px;margin:22px 0}
-.prose p{color:var(--mute);font-size:15px}
-.prose p + p{margin-top:12px}
-.pillars{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-top:22px}
-.pillars div{background:var(--ink);padding:14px}
-.pillars b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
-.pillars p{font-size:13px;color:var(--mute);line-height:1.45}
-.steps{list-style:none;margin:20px 0 0;padding:0;position:relative}
-.steps::before{content:"";position:absolute;left:15px;top:8px;bottom:8px;width:1px;background:var(--line)}
-.steps li{display:grid;grid-template-columns:32px 1fr;gap:14px;padding-bottom:20px;position:relative}
-.steps li:last-child{padding-bottom:0}
-.steps .n{width:31px;height:31px;border:1px solid var(--amber);background:var(--ink);display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--amber);position:relative}
-.steps h3{font-family:var(--sans);font-weight:600;font-size:15.5px;margin:4px 0 4px}
-.steps p{font-size:14px;color:var(--mute)}
-.tools{margin-top:18px;border-top:1px solid var(--line)}
-.tool{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-align:left;width:100%}
-.tool b{display:block;font-weight:600;font-size:15px}
-.tool span{display:block;font-size:13px;color:var(--mute);margin-top:3px;line-height:1.4}
-.tool i{font-style:normal;font-family:var(--mono);font-size:13px;color:var(--amber)}
-.contacts{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-top:20px}
-.contact{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:16px;background:var(--ink-2);text-align:left;width:100%}
-.contact span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute-2)}
-.contact b{display:block;font-weight:500;font-size:15.5px;margin-top:3px}
-.contact i{font-style:normal;color:var(--amber);font-family:var(--mono)}
-.foot{font-size:11.5px;color:var(--mute-2);line-height:1.5;padding-block:24px 10px}
+.me{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center}
+.me img{width:64px;height:64px;border-radius:50%;object-fit:cover}
+.me b{display:block;font-size:17px;font-weight:600}
+.me span{display:block;font-size:14px;color:var(--hint)}
+.her{font-size:16px;line-height:1.5;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.her cite{display:block;font-style:normal;font-size:13px;color:var(--hint);margin-top:6px}
+.prose p{font-size:15.5px;line-height:1.55}
+.prose p + p{margin-top:10px}
+.steps{list-style:none;margin:0;padding:6px 16px}
+.steps li{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:10px 0}
+.steps li + li{border-top:1px solid var(--line)}
+.steps .n{width:28px;height:28px;border-radius:50%;background:var(--fill);display:grid;place-items:center;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.steps b{display:block;font-size:16px;font-weight:600;margin-top:3px}
+.steps p{font-size:14.5px;color:var(--hint);margin-top:2px;line-height:1.45}
+.ext{width:18px;height:18px;stroke:var(--accent-text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* нижнее меню */
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(11,17,22,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-top:1px solid var(--line-soft);padding-bottom:var(--bottom-inset);
-  padding-left:max(6px,env(safe-area-inset-left,0px));padding-right:max(6px,env(safe-area-inset-right,0px))}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);
+  padding-bottom:var(--bottom-inset);padding-left:max(4px,env(safe-area-inset-left,0px));padding-right:max(4px,env(safe-area-inset-right,0px))}
 .tabs-in{display:grid;grid-template-columns:repeat(5,1fr);height:var(--tab-h)}
-.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10.5px;color:var(--mute-2);position:relative;transition:color .2s}
-.tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.tab::before{content:"";position:absolute;top:-1px;left:30%;right:30%;height:2px;background:var(--amber);transform:scaleX(0);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
-.tab.on{color:var(--chalk)}
-.tab.on svg{stroke:var(--amber)}
-.tab.on::before{transform:scaleX(1)}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:500;color:var(--hint);text-align:center}
+.tab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tab.on{color:var(--accent-text)}
 
-/* лайтбокс */
-.lb{position:fixed;inset:0;z-index:60;background:rgba(5,9,12,.95);display:none;align-items:center;justify-content:center;
-  padding:calc(env(safe-area-inset-top,0px) + 56px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 24px) max(16px,env(safe-area-inset-left,0px))}
-.lb.on{display:flex;animation:fade .2s ease}
-.lb img{max-height:100%;max-width:100%;object-fit:contain}
-.lb-x{position:absolute;top:calc(env(safe-area-inset-top,0px) + 12px);right:max(14px,env(safe-area-inset-right,0px));width:40px;height:40px;border:1px solid var(--line);display:grid;place-items:center;font-family:var(--mono);color:var(--chalk);background:var(--ink)}
-.lb-cap{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);text-align:center;font-size:12.5px;color:var(--mute);padding-inline:20px}
+/* шторка */
+.sheet-wrap{position:fixed;inset:0;z-index:50;background:var(--overlay);opacity:0;pointer-events:none;transition:opacity .25s ease}
+.sheet-wrap.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--surface);border-radius:16px 16px 0 0;max-height:86%;overflow-y:auto;
+  padding:8px max(16px,env(safe-area-inset-right,0px)) calc(var(--bottom-inset) + 16px) max(16px,env(safe-area-inset-left,0px));
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.sheet-wrap.on .sheet{transform:none}
+.handle{width:36px;height:5px;border-radius:3px;background:var(--fill);margin:0 auto 14px}
+.sheet h3{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:10px}
+.sheet p{font-size:16px;line-height:1.5}
+.sheet .meta{font-size:14px;color:var(--hint);margin:12px 0 18px}
 
-.toast{position:fixed;left:50%;bottom:calc(var(--tab-h) + var(--bottom-inset) + 14px);transform:translate(-50%,20px);opacity:0;z-index:70;
-  background:var(--chalk);color:#0B1116;font-size:13.5px;font-weight:500;padding:10px 16px;pointer-events:none;transition:all .25s ease;max-width:calc(100% - 32px);text-align:center}
+/* просмотр фото */
+.lb{position:fixed;inset:0;z-index:60;background:#000;display:none;align-items:center;justify-content:center;
+  padding:calc(env(safe-area-inset-top,0px) + 56px) max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 48px) max(12px,env(safe-area-inset-left,0px))}
+.lb.on{display:flex}
+.lb img{max-width:100%;max-height:100%;object-fit:contain}
+.lb-x{position:absolute;top:calc(env(safe-area-inset-top,0px) + 10px);right:max(12px,env(safe-area-inset-right,0px));width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;font-size:18px}
+.lb-cap{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);text-align:center;font-size:13.5px;color:rgba(255,255,255,.75);padding-inline:20px}
+
+.toast{position:fixed;left:50%;bottom:calc(var(--tab-h) + var(--bottom-inset) + 14px);transform:translate(-50%,12px);opacity:0;z-index:70;
+  background:var(--text);color:var(--bg);font-size:14px;font-weight:500;padding:10px 16px;border-radius:10px;pointer-events:none;transition:all .2s ease;max-width:calc(100% - 32px);text-align:center}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-}
-@media (min-width:640px){
-  .screen{max-width:560px;margin-inline:auto}
-  .tabs-in{max-width:560px;margin-inline:auto}
-}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+@media (min-width:640px){.screen,.tabs-in{max-width:560px;margin-inline:auto}}
 </style>
 </head>
 <body>
 
 
-<!-- ГЛАВНАЯ -->
 <main>
-<section class="screen on" id="s-home" data-tab="home">
-  <div class="hero">
-    <canvas id="facade" aria-hidden="true"></canvas>
-    <div class="aura" aria-hidden="true"></div>
-    <img src="img/hero.webp" alt="Людмила Тихонова, агент по новостройкам Санкт-Петербурга">
-    <div class="hero-veil" aria-hidden="true"></div>
-    <div class="hero-tag"><b>Людмила Тихонова</b><span>18 лет в недвижимости · Санкт-Петербург</span></div>
-  </div>
-  <div class="wrap intro">
-    <div class="eyebrow">Недвижимость со стратегией</div>
-    <h1>Покажу только те квартиры, которые <em>выбрала бы сама</em></h1>
-    <p class="sub">Подбираю новостройки в Петербурге и области, в Москве, Калининграде и на юге. Веду сделку до ключей и получаю одобрение по ипотеке там, где банки обычно говорят нет.</p>
-    <div class="row-btns">
-      <button class="btn" data-go="quiz">Подобрать квартиру</button>
-      <button class="btn ghost" data-act="dm">Написать</button>
-    </div>
-    <p class="note">Консультация бесплатно · комиссию платит застройщик</p>
-  </div>
-
-  <div class="stats">
-    <div class="stat"><b class="num" data-count="18">18</b><span>лет в недвижимости</span></div>
-    <div class="stat"><b>5–30<small>+ млн</small></b><span>бюджеты: от комфорта до премиума</span></div>
-    <div class="stat"><b>+<span class="num" data-count="21" style="display:inline;margin:0;font-size:inherit;color:inherit">21</span><small>%</small></b><span>рост цены лота клиента за год</span></div>
-    <div class="stat"><b class="num" data-count="6">6</b><span>регионов, от Карелии до юга</span></div>
-  </div>
-  <div class="ticker" aria-hidden="true"><div class="ticker-row" id="tickRow"></div></div>
-
-  <div class="wrap sec">
-    <div class="eyebrow">Услуги</div>
-    <h2>Разные задачи решаются по разным правилам</h2>
-    <p class="lede">Квартира для жизни и квартира для сдачи выбираются по противоположным критериям.</p>
-    <div class="acc" id="acc">
-      <div class="acc-item open">
-        <button class="acc-head" aria-expanded="true"><span class="k">Жизнь</span><h3>Квартира, в которую переезжают</h3><span class="pm"></span></button>
-        <div class="acc-body"><div><p>Считаем дорогу до работы и школы, смотрим на двор и соседей по площадке, проверяем, что построят за окном. Один клиент в итоге взял квартиру меньше, чем планировал, и добрал кладовую. Получилось удобнее и дешевле.</p><span class="dim">от 28 м² · комфорт, комфорт+ и бизнес</span></div></div>
-      </div>
-      <div class="acc-item">
-        <button class="acc-head" aria-expanded="false"><span class="k">Вложение</span><h3>Лот, который вырастет в цене</h3><span class="pm"></span></button>
-        <div class="acc-body"><div><p>Ранняя стадия, ликвидная нарезка, район с приходящей инфраструктурой. Разбираем экономику проекта и считаем горизонт выхода до брони, а не после. Спекулятивные истории не беру.</p><span class="dim">расчёт доходности до брони</span></div></div>
-      </div>
-      <div class="acc-item">
-        <button class="acc-head" aria-expanded="false"><span class="k">Ипотека</span><h3>Одобрение там, где обычно отказ</h3><span class="pm"></span></button>
-        <div class="acc-body"><div><p>ИП, самозанятые, доход дивидендами, серая часть зарплаты. Собираю анкету так, чтобы банк увидел платёжеспособность, и подаю туда, где такой профиль проходит. Плюс семейная ипотека и субсидированные ставки застройщиков.</p><span class="dim">лимит семейной по СПб и области — 12 млн</span></div></div>
-      </div>
-      <div class="acc-item">
-        <button class="acc-head" aria-expanded="false"><span class="k">Аренда</span><h3>Меблировка и арендатор под ключ</h3><span class="pm"></span></button>
-        <div class="acc-body"><div><p>Дизайнер и команда, мебель и декор, проверенные подрядчики, съёмка, анализ рынка и цена, поиск арендатора. Студия — от трёх недель, однушка — около полутора месяцев, семейная двух-трёхкомнатная — порядка трёх.</p><span class="dim">от 500 000 ₽ · на Васильевском заселили в первый месяц</span></div></div>
-      </div>
-      <div class="acc-item">
-        <button class="acc-head" aria-expanded="false"><span class="k">Загород</span><h3>Дом, а не квартира</h3><span class="pm"></span></button>
-        <div class="acc-body"><div><p>Отдельное направление, под которое я прошла обучение у практиков рынка. Свои ошибки: неудачный участок, подрядчик без репутации, сроки стройки не совпадают с условиями семейной ипотеки на ИЖС. Разбираем до первого платежа.</p><span class="dim">ИЖС · эскроу · аккредитованные подрядчики</span></div></div>
+<!-- ГЛАВНАЯ -->
+<section class="screen on" data-tab="home">
+  <div class="pad">
+    <div class="card">
+      <div class="photo"><img src="img/hero.webp" alt="Людмила Тихонова"></div>
+      <div class="profile-body">
+        <h1>Людмила Тихонова</h1>
+        <p class="role">Агент по новостройкам · Санкт-Петербург</p>
+        <p class="intro">Показываю только те квартиры, которые выбрала бы сама. Веду сделку до ключей и помогаю с ипотекой, даже если вы ИП или у вас доход без 2-НДФЛ.</p>
+        <div class="btns">
+          <button class="btn" data-go="quiz">Подобрать квартиру</button>
+          <button class="btn tinted" data-act="dm">Написать</button>
+        </div>
+        <p class="small">Консультация бесплатная. Комиссию платит застройщик, для вас цена та же.</p>
       </div>
     </div>
 
-    <div class="paper">
+    <h2 class="sh">Коротко</h2>
+    <div class="list">
+      <div class="row"><div class="t">Опыт</div><div class="v">18 лет</div></div>
+      <div class="row"><div class="t">Бюджеты</div><div class="v">5–30+ млн ₽</div></div>
+      <div class="row"><div><div class="t">Где подбираю</div><div class="s">Петербург и область, Москва, Калининград, юг, Карелия</div></div></div>
+      <div class="row"><div class="t">Комиссия</div><div class="v">платит застройщик</div></div>
+    </div>
+
+    <h2 class="sh">Услуги</h2>
+    <div class="list" id="services"></div>
+
+    <div class="card p why">
       <h3>Почему через меня, а не напрямую у застройщика</h3>
-      <p>Цена для вас та же: комиссию агенту платит застройщик из своего бюджета продаж. Разница в том, что вы получаете сверху.</p>
-      <ul>
-        <li>Отдел продаж покажет свои корпуса. Я покажу весь рынок и скажу, где дешевле тот же метр.</li>
-        <li>Проверка объекта и площадки до брони, а не после подписания ДДУ.</li>
-        <li>Торг по условиям: скидки, рассрочки, ставки, которых нет на сайте. В сентябре у одного застройщика это дало от 290 до 450 тысяч экономии.</li>
-        <li>Сопровождение сделки с юристом и приёмка квартиры с дефектовкой.</li>
+      <p>Цена для вас та же: агенту платит застройщик из своего бюджета продаж.</p>
+      <ul class="checks">
+        <li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Отдел продаж покажет свои корпуса. Я покажу весь рынок и скажу, где тот же метр дешевле.</li>
+        <li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Проверяю объект и площадку до брони, а не после подписания ДДУ.</li>
+        <li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Торгуюсь по условиям: скидки, рассрочки, ставки, которых нет на сайте. В сентябре у одного застройщика это дало от 290 до 450 тысяч экономии.</li>
+        <li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Сопровождаю сделку с юристом и принимаю квартиру с дефектовкой.</li>
       </ul>
     </div>
-  </div>
 
-  <div class="sec" style="border-top:1px solid var(--line-soft)">
-    <div class="wrap">
-      <div class="eyebrow">Объекты</div>
-      <h2>Что я показываю клиентам</h2>
-      <p class="lede">Не только квартиру: двор, входную группу, лифтовой холл. Здесь и видна разница между комфортом и бизнесом.</p>
-    </div>
-    <div class="gal" id="gal">
-      <button data-img="img/g1.jpg"><img src="img/g1.jpg" alt="Вечерний двор жилого комплекса" loading="lazy"><span>Двор вечером. Свет в окнах показывает, сколько квартир уже заселено</span></button>
-      <button data-img="img/g2.jpg"><img src="img/g2.jpg" alt="Лобби с исторической кирпичной кладкой" loading="lazy"><span>Лобби с сохранённой кирпичной кладкой</span></button>
-      <button data-img="img/g3.jpg"><img src="img/g3.jpg" alt="Лифтовой холл и почтовые ящики" loading="lazy"><span>Лифтовой холл. То, что редко попадает в рекламу</span></button>
-      <button data-img="img/g4.jpg"><img src="img/g4.jpg" alt="Благоустройство квартала" loading="lazy"><span>Благоустройство квартала и пешеходные маршруты</span></button>
-      <button data-img="img/g5.jpg"><img src="img/g5.jpg" alt="Фасад и входная группа" loading="lazy"><span>Входная группа и материалы фасада</span></button>
-      <button data-img="img/g6.jpg"><img src="img/g6.jpg" alt="Приватный двор без машин" loading="lazy"><span>Двор без машин: парковка убрана под землю</span></button>
-    </div>
-    <p class="wrap gal-note">Визуализации застройщиков из моих подборок. Конкретные проекты разбираем лично.</p>
+    <h2 class="sh">Объекты из подборок</h2>
   </div>
-
-  <div class="wrap sec" style="border-top:1px solid var(--line-soft)">
-    <div class="cta-card">
-      <h3>Три вопроса, и я пойму, что вам искать</h3>
-      <p>Цель, бюджет и способ оплаты. На выходе предварительный вывод и подборка в Telegram.</p>
-      <button class="btn" data-go="quiz">Пройти подбор</button>
+  <div class="hscroll gal">
+    <button data-img="img/g1.jpg"><img src="img/g1.jpg" alt="Вечерний двор жилого комплекса" loading="lazy"><span>Двор вечером: по свету в окнах видно, сколько квартир заселено</span></button>
+    <button data-img="img/g2.jpg"><img src="img/g2.jpg" alt="Лобби с кирпичной кладкой" loading="lazy"><span>Лобби с сохранённой кирпичной кладкой</span></button>
+    <button data-img="img/g3.jpg"><img src="img/g3.jpg" alt="Лифтовой холл" loading="lazy"><span>Лифтовой холл, его редко показывают в рекламе</span></button>
+    <button data-img="img/g4.jpg"><img src="img/g4.jpg" alt="Благоустройство квартала" loading="lazy"><span>Благоустройство и пешеходные маршруты</span></button>
+    <button data-img="img/g5.jpg"><img src="img/g5.jpg" alt="Фасад и входная группа" loading="lazy"><span>Входная группа и материалы фасада</span></button>
+    <button data-img="img/g6.jpg"><img src="img/g6.jpg" alt="Двор без машин" loading="lazy"><span>Двор без машин, парковка под землёй</span></button>
+  </div>
+  <div class="pad">
+    <p class="foot-note">Визуализации застройщиков. Конкретные проекты разбираем лично.</p>
+    <div class="list" style="margin-top:12px">
+      <button class="row" data-go="quiz"><div><div class="t">Подбор за три вопроса</div><div class="s">Цель, бюджет и способ оплаты</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
     </div>
   </div>
 </section>
 
 <!-- ПОДБОР -->
-<section class="screen" id="s-quiz" data-tab="quiz">
-  <div class="wrap sec" style="padding-top:22px">
-    <div class="eyebrow">Подбор</div>
-    <h2>Три вопроса, и я пойму, что вам искать</h2>
-    <div class="q-top"><span id="qCount">Вопрос 1 из 3</span><span>≈ 1 минута</span></div>
-    <div class="q-prog" id="qProg"><i class="on"></i><i></i><i></i></div>
+<section class="screen" data-tab="quiz">
+  <div class="pad">
+    <h1 class="lt">Подбор квартиры</h1>
+    <p class="sub">Три вопроса, около минуты. В конце будет предварительный вывод.</p>
+    <div class="step-meta"><span id="qCount">Шаг 1 из 3</span></div>
+    <div class="progress"><i id="qBar" style="width:33.3%"></i></div>
 
     <div class="q-step on" data-k="goal">
-      <h3>Зачем покупаете?</h3>
-      <div class="q-opts">
-        <button class="q-opt" data-v="live">Чтобы жить самому</button>
-        <button class="q-opt" data-v="invest">Чтобы вложить деньги</button>
-        <button class="q-opt" data-v="rent">Чтобы сдавать</button>
-        <button class="q-opt" data-v="kids">Детям на будущее</button>
-        <button class="q-opt" data-v="house">Хочу дом за городом</button>
+      <h2>Зачем покупаете?</h2>
+      <div class="list">
+        <button class="row q-opt" data-v="live"><span class="t">Чтобы жить самому</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="row q-opt" data-v="invest"><span class="t">Чтобы вложить деньги</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="row q-opt" data-v="rent"><span class="t">Чтобы сдавать</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="row q-opt" data-v="kids"><span class="t">Детям на будущее</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="row q-opt" data-v="house"><span class="t">Хочу дом за городом</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
       </div>
     </div>
     <div class="q-step" data-k="budget">
-      <h3>Какой бюджет рассматриваете?</h3>
-      <div class="q-opts">
-        <button class="q-opt" data-v="a">До 7 млн ₽</button>
-        <button class="q-opt" data-v="b">7–12 млн ₽</button>
-        <button class="q-opt" data-v="c">12–20 млн ₽</button>
-        <button class="q-opt" data-v="d">Больше 20 млн ₽</button>
+      <h2>Какой бюджет рассматриваете?</h2>
+      <div class="list">
+        <button class="row q-opt" data-v="a"><span class="t">До 7 млн ₽</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="row q-opt" data-v="b"><span class="t">7–12 млн ₽</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="row q-opt" data-v="c"><span class="t">12–20 млн ₽</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="row q-opt" data-v="d"><span class="t">Больше 20 млн ₽</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
       </div>
     </div>
     <div class="q-step" data-k="pay">
-      <h3>Как планируете платить?</h3>
-      <div class="q-opts">
-        <button class="q-opt" data-v="family">Семейная ипотека, есть дети до 7 лет</button>
-        <button class="q-opt" data-v="ip">Ипотека, но я ИП или без 2-НДФЛ</button>
-        <button class="q-opt" data-v="mort">Обычная ипотека</button>
-        <button class="q-opt" data-v="cash">Рассрочка или свои деньги</button>
+      <h2>Как планируете платить?</h2>
+      <div class="list">
+        <button class="row q-opt" data-v="family"><span class="t">Семейная ипотека, есть дети до 7 лет</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="row q-opt" data-v="ip"><span class="t">Ипотека, но я ИП или без 2-НДФЛ</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="row q-opt" data-v="mort"><span class="t">Обычная ипотека</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button class="row q-opt" data-v="cash"><span class="t">Рассрочка или свои деньги</span><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
       </div>
     </div>
 
     <div class="q-res" id="qRes">
-      <div class="res-card">
+      <div class="card p res">
         <span class="k">Предварительный вывод</span>
-        <h3 id="rTitle">Квартира для жизни · 7–12 млн</h3>
+        <h3 id="rTitle">Квартира для жизни</h3>
         <p id="rText"></p>
       </div>
-      <form class="form" id="leadForm" novalidate>
-        <h4>Получить подборку от Людмилы</h4>
-        <div class="field"><label for="fName">Как к вам обращаться</label><input id="fName" name="name" autocomplete="given-name" placeholder="Имя"></div>
-        <div class="field"><label for="fPhone">Телефон, если удобнее звонок</label><input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7"></div>
-        <div class="field"><label for="fNote">Что ещё важно</label><textarea id="fNote" name="note" placeholder="Район, срок въезда, этаж, вид из окна"></textarea></div>
-        <button class="btn" type="submit"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 4.2 2.9 11.3c-1.3.5-1.2 1.3-.2 1.6l4.7 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.5-1.4ZM9 14l9.2-5.8c.4-.3.8-.1.5.2l-7.6 6.9-.3 3.2L9 14Z"/></svg>Отправить в Telegram</button>
-        <p class="hint">Откроется чат с Людмилой, текст заявки уже будет в поле сообщения. Останется нажать «Отправить».</p>
-        <div class="sent" id="sent"><i>✓</i><span>Чат открыт. Если текст не подставился, он скопирован: вставьте его в сообщение.</span></div>
-        <button type="button" class="link-btn" id="qAgain">Пройти заново</button>
+      <div class="list" id="rAnswers"></div>
+      <h2 class="sh" style="margin-top:8px">Получить подборку</h2>
+      <form id="leadForm" novalidate style="display:flex;flex-direction:column;gap:12px">
+        <div class="list">
+          <label class="field" for="fName"><span>Имя</span><input id="fName" name="name" autocomplete="given-name" placeholder="Как к вам обращаться"></label>
+          <label class="field" for="fPhone"><span>Телефон</span><input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Если удобнее звонок"></label>
+          <label class="field" for="fNote"><span>Пожелания</span><textarea id="fNote" name="note" placeholder="Район, срок въезда, этаж, вид из окна"></textarea></label>
+        </div>
+        <button class="btn" type="submit"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 4.2 2.9 11.3c-1.3.5-1.2 1.3-.2 1.6l4.7 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.5-1.4ZM9 14l9.2-5.8c.4-.3.8-.1.5.2l-7.6 6.9-.3 3.2L9 14Z"/></svg>Отправить Людмиле</button>
+        <p class="foot-note">Откроется чат с Людмилой, текст заявки уже будет в поле сообщения. Останется нажать «Отправить».</p>
+        <div class="sent" id="sent"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Чат открыт. Если текст не подставился, он скопирован, вставьте его в сообщение.</span></div>
+        <button type="button" class="text-btn" id="qAgain">Пройти заново</button>
       </form>
     </div>
   </div>
 </section>
 
 <!-- ИПОТЕКА -->
-<section class="screen" id="s-money" data-tab="money">
-  <div class="wrap sec" style="padding-top:22px">
-    <div class="eyebrow">Ипотека</div>
-    <h2>Сколько будет платёж</h2>
-    <p class="lede">Предварительный расчёт. Точные условия под вашу ситуацию Людмила проверит в день обращения.</p>
+<section class="screen" data-tab="money">
+  <div class="pad">
+    <h1 class="lt">Ипотека</h1>
+    <p class="sub">Предварительный расчёт. Точные условия под вашу ситуацию Людмила проверит в день обращения.</p>
 
-    <div class="calc">
-      <div class="chips" id="chips">
-        <button class="chip on" data-prog="family">Семейная<b>6%</b></button>
-        <button class="chip" data-prog="fix">Фикс<b>7,77%</b></button>
-        <button class="chip" data-prog="market">Рыночная</button>
+    <div class="card calc">
+      <div class="seg" id="seg" role="tablist" aria-label="Программа">
+        <button class="on" data-prog="family">Семейная</button>
+        <button data-prog="fix">Фикс</button>
+        <button data-prog="market">Рыночная</button>
       </div>
-      <div class="ctrl">
+      <div>
         <div class="ctrl-top"><label for="cPrice">Стоимость квартиры</label><output id="oPrice"></output></div>
         <input type="range" id="cPrice" min="3" max="40" step="0.1" value="11">
       </div>
-      <div class="ctrl">
+      <div>
         <div class="ctrl-top"><label for="cDown">Первый взнос</label><output id="oDown"></output></div>
         <input type="range" id="cDown" min="0" max="90" step="1" value="20">
       </div>
-      <div class="ctrl">
+      <div>
         <div class="ctrl-top"><label for="cTerm">Срок</label><output id="oTerm"></output></div>
         <input type="range" id="cTerm" min="5" max="30" step="1" value="30">
       </div>
-      <div class="rate-row">
-        <div class="field"><label for="cRate" id="lRate">Ставка, %</label><input id="cRate" type="number" inputmode="decimal" step="0.01" min="0" max="40" value="6"></div>
-        <div class="field" id="mRateWrap"><label for="cMRate">Сверх 12 млн, %</label><input id="cMRate" type="number" inputmode="decimal" step="0.1" min="0" max="40" value="21"></div>
+      <div class="rates">
+        <div class="rate-box"><label for="cRate" id="lRate">Ставка до 12 млн, %</label><input id="cRate" type="number" inputmode="decimal" step="0.01" min="0" max="40" value="6"></div>
+        <div class="rate-box" id="mRateWrap"><label for="cMRate">Сверх 12 млн, %</label><input id="cMRate" type="number" inputmode="decimal" step="0.1" min="0" max="40" value="21"></div>
       </div>
       <p class="warn" id="warn" hidden></p>
-      <div class="result">
-        <span class="k">Ежемесячный платёж</span>
-        <div class="pay"><span id="rPay">0</span> <small>₽/мес</small></div>
-        <div class="pay-split" id="rSplit"></div>
-        <div class="bar"><i id="bBody" style="width:50%"></i><i id="bInt" style="width:50%"></i></div>
-        <div class="legend"><span>Тело кредита</span><span>Проценты за весь срок</span></div>
-        <div class="facts">
-          <div><b id="rCredit">0</b><span>сумма кредита</span></div>
-          <div><b id="rOver">0</b><span>переплата</span></div>
-          <div><b id="rDownSum">0</b><span>первый взнос</span></div>
-          <div><b id="rIncome">0</b><span>доход для одобрения, ориентир</span></div>
-        </div>
-        <button class="btn" data-act="calc-send">Посчитать точно с Людмилой</button>
-      </div>
     </div>
-    <p class="disc">Средняя рыночная ставка на новостройки в октябре 2026 — около 21% с учётом страховки. Доход-ориентир: банки обычно хотят, чтобы платежи были не больше половины дохода.</p>
-  </div>
 
-  <div class="wrap sec">
-    <div class="eyebrow">Схемы оплаты</div>
-    <h2>Способов заплатить больше, чем кажется</h2>
-    <p class="lede">У застройщиков есть программы, которые меняют платёж в разы. С этими Людмила работает регулярно.</p>
-    <div class="progs">
-      <div class="prog"><b>от 6%</b><div><h3>Семейная ипотека</h3><p>Дети до семи лет, только первичка. По Петербургу и области лимит 12 млн по льготной ставке, выше — комбинация с рыночной. У отдельных застройщиков доходит до 3,5% на весь срок.</p></div></div>
-      <div class="prog"><b>0,01%</b><div><h3>Субсидированная от застройщика</h3><p>Первые год-два платёж почти символический. Важно считать, что заложено в цену метра: иногда выгодно, иногда нет.</p></div></div>
-      <div class="prog"><b>7,77%</b><div><h3>Фиксированная на срок</h3><p>Программы с фиксацией на семь лет и варианты около 6% с фиксацией на пять. Для тех, кто не проходит по семейной.</p></div></div>
-      <div class="prog"><b>50/50</b><div><h3>Рассрочка от застройщика</h3><p>Схемы 50 на 50, 30 на 70, оплата четырьмя частями. Иногда рассрочка растягивается на годы и заменяет ипотеку целиком.</p></div></div>
-      <div class="prog"><b>25%</b><div><h3>Траншевая ипотека</h3><p>Первый транш минимальный, основная сумма приходит ближе к сдаче. Платёж на время стройки остаётся небольшим.</p></div></div>
-      <div class="prog"><b>0 ₽</b><div><h3>Без первого взноса</h3><p>Встречается в отдельных проектах, чаще в области. Для тех, у кого есть доход, но нет накопленного взноса.</p></div></div>
+    <div class="card result">
+      <span class="k">Платёж в месяц</span>
+      <div class="pay"><span id="rPay">0</span> <small>₽</small></div>
+      <div class="pay-split" id="rSplit"></div>
+      <div class="bar"><i id="bBody" style="width:50%"></i><i id="bInt" style="width:50%"></i></div>
+      <div class="legend"><span>Кредит</span><span>Проценты за весь срок</span></div>
+      <div class="list">
+        <div class="row"><div class="t">Сумма кредита</div><div class="v strong" id="rCredit">0</div></div>
+        <div class="row"><div class="t">Переплата</div><div class="v strong" id="rOver">0</div></div>
+        <div class="row"><div class="t">Первый взнос</div><div class="v strong" id="rDownSum">0</div></div>
+        <div class="row"><div><div class="t">Нужный доход</div><div class="s">Банки хотят, чтобы платёж был не больше половины дохода</div></div><div class="v strong" id="rIncome">0</div></div>
+      </div>
+      <button class="btn" data-act="calc-send">Посчитать точно с Людмилой</button>
     </div>
-    <p class="disc">Ставки и условия меняются едва ли не каждый месяц, льготные программы регулярно пересматривают.</p>
+    <p class="foot-note">Средняя рыночная ставка на новостройки в октябре 2026 года около 21% с учётом страховки.</p>
+
+    <h2 class="sh">Программы и схемы оплаты</h2>
+    <div class="list">
+      <div class="row"><div><div class="t">Семейная ипотека</div><div class="s">Дети до 7 лет, только новостройки. В СПб и области 12 млн по льготной ставке, остальное по рыночной. У отдельных застройщиков до 3,5%.</div></div><div class="rate">от 6%</div></div>
+      <div class="row"><div><div class="t">Субсидированная</div><div class="s">Первые год-два платёж почти символический. Важно проверить, не заложена ли скидка в цену метра.</div></div><div class="rate">от 0,01%</div></div>
+      <div class="row"><div><div class="t">Фиксированная ставка</div><div class="s">Фиксация на семь лет или около 6% на пять. Для тех, кто не проходит по семейной.</div></div><div class="rate">7,77%</div></div>
+      <div class="row"><div><div class="t">Рассрочка застройщика</div><div class="s">50 на 50, 30 на 70, четыре платежа. Иногда растягивается на годы и заменяет ипотеку.</div></div><div class="rate">50/50</div></div>
+      <div class="row"><div><div class="t">Траншевая ипотека</div><div class="s">Основная сумма приходит ближе к сдаче дома, пока идёт стройка, платёж небольшой.</div></div><div class="rate">от 25%</div></div>
+      <div class="row"><div><div class="t">Без первого взноса</div><div class="s">В отдельных проектах, чаще в области. Подходит, если доход есть, а накоплений нет.</div></div><div class="rate">0 ₽</div></div>
+    </div>
+    <p class="foot-note">Ставки и условия меняются почти каждый месяц.</p>
   </div>
 </section>
 
-<!-- ОТЗЫВЫ -->
-<section class="screen" id="s-cases" data-tab="cases">
-  <div class="wrap sec" style="padding-top:22px">
-    <div class="eyebrow">Кейсы</div>
-    <h2>Три истории, которые объясняют мою работу</h2>
-    <div class="cases">
-      <article class="case">
-        <span class="k">Инвестиция</span>
-        <div class="big">+3 млн</div>
-        <div class="cap">за 12 месяцев, это плюс 21% к вложенной сумме</div>
-        <div class="where">Московский район · бизнес-класс</div>
-        <p>Клиент искал, куда переложить деньги. Взяли лот на старте продаж в проекте с приходящей инфраструктурой, зафиксировали цену на раннем этапе и добавили субсидированную ставку.</p>
-        <p class="punch">Рост дала не удача: сейчас работает точечный выбор, а не покупка любой новостройки.</p>
-      </article>
-      <article class="case">
-        <span class="k">Сложная сделка</span>
-        <div class="big">25 часов</div>
-        <div class="cap">от воскресного полудня до понедельника, тринадцати часов</div>
-        <div class="where">Петрозаводск · семейная ипотека</div>
-        <p>В городе не оказалось офиса нужного банка, сервис удалённого открытия счёта падал раз за разом, а за два часа до сделки отказала электронная подпись клиента. Разобрали каждую проблему по очереди.</p>
-        <p class="punch">Именно за это, а не за показ квартир, клиенты платят агенту комиссией застройщика.</p>
-      </article>
-      <article class="case">
-        <span class="k">Под ключ</span>
-        <div class="big">1 месяц</div>
-        <div class="cap">от готовой квартиры до заехавшего арендатора</div>
-        <div class="where">Васильевский остров · квартира в аренду</div>
-        <p>Собственнику нужен был работающий актив, а не бетон. Подобрали объект, меблировали под ключ, сняли профессионально, проанализировали рынок и выставили цену.</p>
-        <p class="punch">Арендатор заехал в первый же месяц. Хозяин не потратил на это ни одного выходного.</p>
-      </article>
-    </div>
-  </div>
+<!-- КЕЙСЫ И ОТЗЫВЫ -->
+<section class="screen" data-tab="cases">
+  <div class="pad">
+    <h1 class="lt">Кейсы и отзывы</h1>
+    <article class="card case">
+      <span class="chip">Инвестиция</span>
+      <h3>Московский район, бизнес-класс</h3>
+      <p class="res-line">+3 млн ₽ за 12 месяцев, это +21% к вложенной сумме</p>
+      <p>Клиент искал, куда переложить деньги. Взяли лот на старте продаж в проекте с приходящей инфраструктурой, зафиксировали цену и добавили субсидированную ставку. Через год похожие квартиры в корпусе стоили заметно дороже.</p>
+    </article>
+    <article class="card case">
+      <span class="chip">Сложная сделка</span>
+      <h3>Петрозаводск, семейная ипотека</h3>
+      <p class="res-line">25 часов от начала до конца сделки</p>
+      <p>В городе не оказалось офиса нужного банка, сервис удалённого открытия счёта падал, а за два часа до сделки отказала электронная подпись клиента. Решали проблемы по очереди: начали в воскресенье в полдень, закончили в понедельник около часа дня.</p>
+    </article>
+    <article class="card case">
+      <span class="chip">Аренда под ключ</span>
+      <h3>Васильевский остров</h3>
+      <p class="res-line">Арендатор заехал через месяц после покупки</p>
+      <p>Собственник хотел, чтобы квартира сразу приносила доход. Подобрали объект, меблировали, сделали профессиональную съёмку, оценили рынок и выставили цену. Хозяин не потратил на это ни одного выходного.</p>
+    </article>
 
-  <div class="wrap sec">
-    <div class="eyebrow">Отзывы</div>
-    <h2>Что клиенты пишут после сделки</h2>
-    <p class="lede">Без правок. Это сообщения, которые приходят в личку, когда всё уже закончилось.</p>
-    <div class="quotes">
-      <blockquote class="quote"><p>Все чётко и быстро, в течение недели выбрали квартиру и оформили сделку. Огромная благодарность за профессионализм, качество и безопасность.</p><cite>Покупка квартиры, сделка за неделю</cite></blockquote>
-      <blockquote class="quote"><p>Она быстро подыскала подходящий вариант и вела нас от начала до конца сделки, всегда была на связи. Я и представить не могла, что возможно купить квартиру за несколько дней.</p><cite>Подбор и сопровождение сделки</cite></blockquote>
-      <blockquote class="quote"><p>Отдельное спасибо за внимание к деталям и постоянную обратную связь: все вопросы решались быстро и понятно, без лишней сложности.</p><cite>Клиент по рекомендации</cite></blockquote>
-      <blockquote class="quote"><p>Когда мы продавали свою любимую квартиру, я была спокойна и уверена. Даже не мечтала, что продадим её за 4 дня.</p><cite>Продажа квартиры за 4 дня</cite></blockquote>
-    </div>
-    <div class="shots" id="shots">
-      <button data-img="img/r1.jpg" aria-label="Открыть отзыв 1"><img src="img/r1.jpg" alt="Скриншот отзыва клиента" loading="lazy"></button>
-      <button data-img="img/r2.jpg" aria-label="Открыть отзыв 2"><img src="img/r2.jpg" alt="Скриншот отзыва клиента" loading="lazy"></button>
-      <button data-img="img/r3.jpg" aria-label="Открыть отзыв 3"><img src="img/r3.jpg" alt="Скриншот отзыва клиента" loading="lazy"></button>
-      <button data-img="img/r4.jpg" aria-label="Открыть отзыв 4"><img src="img/r4.jpg" alt="Скриншот отзыва клиента" loading="lazy"></button>
-    </div>
-    <p class="shots-cap">Оригиналы переписок. Нажмите, чтобы прочитать целиком.</p>
-    <div class="trust">
-      <div><b>Юрист на сложных сделках</b><p>Документы проверяет юрист, я держу координацию на ключевых этапах.</p></div>
-      <div><b>Не бросаю на середине</b><p>Даже когда часть работы берут коллеги, я остаюсь в общем чате до конца. Дополнительно это не оплачивается.</p></div>
-      <div><b>Учусь дальше</b><p>Последнее обучение — загородная недвижимость и ИЖС.</p></div>
+    <h2 class="sh">Отзывы</h2>
+    <p class="sub" style="margin-top:-4px">Сообщения от клиентов после сделки, без правок. Нажмите, чтобы открыть.</p>
+  </div>
+  <div class="hscroll shots">
+    <button data-img="img/r1.jpg" aria-label="Открыть отзыв 1"><img src="img/r1.jpg" alt="Скриншот отзыва клиента" loading="lazy"></button>
+    <button data-img="img/r2.jpg" aria-label="Открыть отзыв 2"><img src="img/r2.jpg" alt="Скриншот отзыва клиента" loading="lazy"></button>
+    <button data-img="img/r3.jpg" aria-label="Открыть отзыв 3"><img src="img/r3.jpg" alt="Скриншот отзыва клиента" loading="lazy"></button>
+    <button data-img="img/r4.jpg" aria-label="Открыть отзыв 4"><img src="img/r4.jpg" alt="Скриншот отзыва клиента" loading="lazy"></button>
+  </div>
+  <div class="pad">
+    <blockquote class="card quote" style="margin:0"><p>По совету друга обратился по подбору квартиры к Людмиле Тихоновой. Всё чётко и быстро, в течение недели выбрали квартиру и оформили сделку.</p><cite>Покупка квартиры</cite></blockquote>
+    <blockquote class="card quote" style="margin:0"><p>Она быстро подыскала подходящий вариант и вела нас от начала до конца сделки, всегда была на связи. Я и представить не могла, что возможно купить квартиру за несколько дней.</p><cite>Подбор и сопровождение</cite></blockquote>
+    <blockquote class="card quote" style="margin:0"><p>Когда мы продавали свою любимую квартиру, я была спокойна и уверена, что продажа пройдёт легко. Даже не мечтала, что продадим её за 4 дня.</p><cite>Продажа квартиры</cite></blockquote>
+
+    <h2 class="sh">Как я веду сделку</h2>
+    <div class="list">
+      <div class="row"><div><div class="t">Юрист на сложных сделках</div><div class="s">Документы проверяет юрист, я координирую ключевые этапы</div></div></div>
+      <div class="row"><div><div class="t">Остаюсь до конца</div><div class="s">Даже если часть работы берут коллеги, я в общем чате до подписания акта</div></div></div>
+      <div class="row"><div><div class="t">Продолжаю учиться</div><div class="s">Последнее обучение: загородная недвижимость и ИЖС</div></div></div>
     </div>
   </div>
 </section>
 
 <!-- О СЕБЕ -->
-<section class="screen" id="s-about" data-tab="about">
-  <div class="wrap sec" style="padding-top:22px">
-    <div class="eyebrow">Обо мне</div>
-    <h2>Я не продаю квартиры. Я довожу сделку до конца</h2>
-    <div class="me"><img src="img/portrait.jpg" alt="Людмила Тихонова у фасада новостройки" loading="lazy"><div><b>Людмила Тихонова</b><span>Агент по новостройкам, 18 лет на рынке, Санкт-Петербург</span></div></div>
-    <p class="big-quote">Когда всё вокруг начинает рушиться, рядом должен быть кто-то, кто соберёт это обратно.</p>
-    <div class="prose">
-      <p>За восемнадцать лет я поняла простую вещь: выбрать квартиру — это половина работы, и не самая сложная. Сложное начинается после одобрения. Банк меняет условия, сервис удалённой сделки падает, электронная подпись отказывает за два часа до регистрации.</p>
-      <p>Поэтому я не беру много клиентов одновременно. Зато каждого веду лично, от первого разговора до подписанного акта приёмки.</p>
+<section class="screen" data-tab="about">
+  <div class="pad">
+    <h1 class="lt">О себе</h1>
+    <div class="card p">
+      <div class="me"><img src="img/portrait.jpg" alt="Людмила Тихонова" loading="lazy"><div><b>Людмила Тихонова</b><span>Агент по новостройкам, 18 лет на рынке</span></div></div>
+      <p class="her">Когда всё вокруг начинает рушиться, рядом должен быть кто-то, кто соберёт это обратно.<cite>Людмила</cite></p>
     </div>
-    <div class="pillars">
-      <div><b>Стратегия</b><p>Сначала задача: жить, сдавать, сохранить деньги, оставить детям. Объект под неё.</p></div>
-      <div><b>Проверка</b><p>Реестр застройщиков, история площадки, планы КГА, инсоляция. До брони.</p></div>
-      <div><b>Ипотека</b><p>ИП, самозанятые, доход без 2-НДФЛ, дивиденды. Знаю, какой банк такое берёт.</p></div>
-      <div><b>Сделка</b><p>Бронь, ДДУ, эскроу, регистрация, приёмка. На сложных — с юристом.</p></div>
+    <div class="card p prose">
+      <p>За восемнадцать лет я поняла, что выбрать квартиру — только половина работы. Сложное начинается после одобрения: банк меняет условия, сервис удалённой сделки падает, электронная подпись отказывает за два часа до регистрации.</p>
+      <p>Поэтому я не беру много клиентов одновременно и каждого веду лично, от первого разговора до акта приёмки.</p>
     </div>
-  </div>
 
-  <div class="wrap sec">
-    <div class="eyebrow">Как я работаю</div>
-    <h2>Пять шагов от разговора до ключей</h2>
-    <ol class="steps">
-      <li><span class="n">01</span><div><h3>Разговор о задаче</h3><p>Двадцать минут без показа объектов. Зачем покупка, какой бюджет реальный, откуда первый взнос, когда въезжать. На выходе пошаговый план.</p></div></li>
-      <li><span class="n">02</span><div><h3>Подборка и отсев</h3><p>Варианты с расчётом: цена метра, срок сдачи, что рядом строится. С пояснением, почему один лот в списке, а другой я отбросила.</p></div></li>
-      <li><span class="n">03</span><div><h3>Деньги и банк</h3><p>Считаем платёж, сравниваем программы, готовим анкету. Подаём туда, где ваш профиль проходит.</p></div></li>
-      <li><span class="n">04</span><div><h3>Просмотры и торг</h3><p>Этаж, вид, шум, двор, отделка в шоуруме. Торгуемся по условиям и фиксируем цену бронью.</p></div></li>
-      <li><span class="n">05</span><div><h3>Сделка и приёмка</h3><p>ДДУ, эскроу, регистрация. На выдачу ключей приезжаю с приёмщиком: дефекты фиксируем актом.</p></div></li>
+    <h2 class="sh">Чем помогаю</h2>
+    <div class="list">
+      <div class="row"><div><div class="t">Стратегия</div><div class="s">Сначала цель: жить, сдавать, сохранить деньги, оставить детям. Объект подбираем под неё.</div></div></div>
+      <div class="row"><div><div class="t">Проверка</div><div class="s">Реестр застройщиков, история участка, планы КГА, инсоляция, экология. До брони.</div></div></div>
+      <div class="row"><div><div class="t">Ипотека</div><div class="s">ИП, самозанятые, доход без 2-НДФЛ, дивиденды. Знаю, какой банк одобрит такую анкету.</div></div></div>
+      <div class="row"><div><div class="t">Сделка</div><div class="s">Бронь, ДДУ, эскроу, регистрация, приёмка. На сложных сделках с юристом.</div></div></div>
+    </div>
+
+    <h2 class="sh">Как я работаю</h2>
+    <ol class="card steps">
+      <li><span class="n">1</span><div><b>Разговор о задаче</b><p>Двадцать минут без показа объектов: цель, реальный бюджет, первый взнос, срок въезда. На выходе пошаговый план.</p></div></li>
+      <li><span class="n">2</span><div><b>Подборка</b><p>Варианты с расчётом: цена метра, срок сдачи, что строится рядом. И почему другие лоты я отбросила.</p></div></li>
+      <li><span class="n">3</span><div><b>Деньги и банк</b><p>Считаем платёж, сравниваем программы, готовим анкету и подаём туда, где ваш профиль проходит.</p></div></li>
+      <li><span class="n">4</span><div><b>Просмотры и торг</b><p>Этаж, вид, шум, двор, отделка в шоуруме. Торгуемся по условиям и фиксируем цену бронью.</p></div></li>
+      <li><span class="n">5</span><div><b>Сделка и приёмка</b><p>ДДУ, эскроу, регистрация. На выдачу ключей приезжаю с приёмщиком, дефекты фиксируем актом.</p></div></li>
     </ol>
-  </div>
 
-  <div class="wrap sec">
-    <div class="eyebrow">Бесплатно</div>
-    <h2>Чем я проверяю застройщика</h2>
-    <p class="lede">Этим списком я пользуюсь перед каждой сделкой. Проверьте свой будущий дом сами.</p>
-    <div class="tools">
-      <button class="tool" data-href="https://наш.дом.рф/"><div><b>Единый реестр застройщиков</b><span>Все объекты компании, сроки, переносы сдачи, проблемные стройки</span></div><i>↗</i></button>
-      <div class="tool"><div><b>СледиЗаСтройкой.рф</b><span>Фотофиксация хода работ по неделям: стоит стройка или идёт</span></div><i></i></div>
-      <button class="tool" data-href="https://nspd.gov.ru/map"><div><b>Публичная кадастровая карта</b><span>Назначение участка и кому принадлежит соседняя земля</span></div><i>↗</i></button>
-      <div class="tool"><div><b>Планы КГА</b><span>Что согласовано к застройке рядом. Вид на парк может стать видом на корпус</span></div><i></i></div>
-      <button class="tool" data-href="https://shadowmap.org/"><div><b>Shadowmap</b><span>Сколько солнца будет в окне в декабре, а не на рендере в июне</span></div><i>↗</i></button>
-      <button class="tool" data-href="https://wikimapia.org/"><div><b>Wikimapia</b><span>Что здесь было раньше: свалка, завод, кладбище, парк</span></div><i>↗</i></button>
-      <div class="tool"><div><b>Экологический рейтинг районов</b><span>Роза ветров, промзоны, шум от КАД и железной дороги</span></div><i></i></div>
+    <h2 class="sh">Как проверить застройщика</h2>
+    <p class="sub" style="margin-top:-4px">Сервисы, которыми я пользуюсь перед каждой сделкой.</p>
+    <div class="list">
+      <button class="row" data-href="https://наш.дом.рф/"><div><div class="t">Единый реестр застройщиков</div><div class="s">Объекты компании, сроки, переносы сдачи</div></div><svg class="ext" viewBox="0 0 24 24"><path d="M8 16 16 8M9 8h7v7"/></svg></button>
+      <div class="row"><div><div class="t">СледиЗаСтройкой.рф</div><div class="s">Фото хода работ по неделям</div></div></div>
+      <button class="row" data-href="https://nspd.gov.ru/map"><div><div class="t">Публичная кадастровая карта</div><div class="s">Назначение участка и соседняя земля</div></div><svg class="ext" viewBox="0 0 24 24"><path d="M8 16 16 8M9 8h7v7"/></svg></button>
+      <div class="row"><div><div class="t">Планы КГА</div><div class="s">Что согласовано к застройке рядом</div></div></div>
+      <button class="row" data-href="https://shadowmap.org/"><div><div class="t">Shadowmap</div><div class="s">Сколько солнца будет в окне зимой</div></div><svg class="ext" viewBox="0 0 24 24"><path d="M8 16 16 8M9 8h7v7"/></svg></button>
+      <button class="row" data-href="https://wikimapia.org/"><div><div class="t">Wikimapia</div><div class="s">Что было на участке раньше</div></div><svg class="ext" viewBox="0 0 24 24"><path d="M8 16 16 8M9 8h7v7"/></svg></button>
+      <div class="row"><div><div class="t">Экологический рейтинг районов</div><div class="s">Роза ветров, промзоны, шум от КАД и железной дороги</div></div></div>
     </div>
-  </div>
 
-  <div class="wrap sec">
-    <div class="eyebrow">Контакты</div>
-    <h2>Напишите, и я отвечу по делу</h2>
-    <p class="lede">Расскажите задачу в двух предложениях. Если пойму, что помочь не смогу, скажу сразу и посоветую, к кому обратиться.</p>
-    <div class="contacts">
-      <button class="contact" data-act="dm"><div><span>Личные сообщения</span><b>@agent_tixonova</b></div><i>→</i></button>
-      <button class="contact" data-act="channel"><div><span>Telegram-канал</span><b>Недвижимость со стратегией</b></div><i>→</i></button>
+    <h2 class="sh">Контакты</h2>
+    <div class="list">
+      <button class="row" data-act="dm"><div><div class="s" style="margin:0 0 2px">Личные сообщения</div><div class="t">@agent_tixonova</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      <button class="row" data-act="channel"><div><div class="s" style="margin:0 0 2px">Telegram-канал</div><div class="t">Недвижимость со стратегией</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
     </div>
-    <p class="foot">Информация не является публичной офертой. Условия ипотечных программ, сроки сдачи и стоимость объектов застройщики и банки меняют регулярно, актуальные цифры уточняйте при обращении.<br>Людмила Тихонова · Санкт-Петербург</p>
+    <p class="foot-note" style="padding-block:8px">Опишите задачу в паре предложений, консультация бесплатная. Информация не является публичной офертой: условия программ, сроки сдачи и цены меняются, уточняйте при обращении.</p>
   </div>
 </section>
 </main>
@@ -640,12 +495,22 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;background:var(--ink)
 <nav class="tabs" aria-label="Разделы">
   <div class="tabs-in">
     <button class="tab on" data-go="home"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-5.5h-5V20H4z"/></svg>Главная</button>
-    <button class="tab" data-go="quiz"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.4-4.4M8.5 11h5M11 8.5v5"/></svg>Подбор</button>
-    <button class="tab" data-go="money"><svg viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17"/><path d="M8 8h8M8.5 16.5l7-5M9 12.2h.01M15 16h.01"/></svg>Ипотека</button>
-    <button class="tab" data-go="cases"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12.5h5"/></svg>Отзывы</button>
+    <button class="tab" data-go="quiz"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.4-4.4"/></svg>Подбор</button>
+    <button class="tab" data-go="money"><svg viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></svg>Ипотека</button>
+    <button class="tab" data-go="cases"><svg viewBox="0 0 24 24"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H10l-5 4V6a1 1 0 0 1 1-1z"/></svg>Отзывы</button>
     <button class="tab" data-go="about"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4.1-5.5 7.5-5.5s6.3 1.9 7.5 5.5"/></svg>О себе</button>
   </div>
 </nav>
+
+<div class="sheet-wrap" id="sheetWrap">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+    <div class="handle"></div>
+    <h3 id="shTitle"></h3>
+    <p id="shText"></p>
+    <p class="meta" id="shMeta"></p>
+    <button class="btn" id="shBtn">Обсудить с Людмилой</button>
+  </div>
+</div>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Просмотр изображения">
   <button class="lb-x" id="lbX" aria-label="Закрыть">✕</button>
@@ -658,180 +523,166 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;background:var(--ink)
 (function(){
   "use strict";
   var DM = "agent_tixonova", CHANNEL = "agent_tixonova_novostroy";
-  var tg = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData !== undefined ? window.Telegram.WebApp : null;
+  var tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
   var inTg = !!(tg && tg.platform && tg.platform !== "unknown");
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var root = document.documentElement;
   function ver(v){ try { return inTg && tg.isVersionAtLeast(v); } catch(e){ return false; } }
   function haptic(kind){ try { if (inTg && tg.HapticFeedback){ if (kind==="ok") tg.HapticFeedback.notificationOccurred("success"); else if (kind==="sel") tg.HapticFeedback.selectionChanged(); else tg.HapticFeedback.impactOccurred("light"); } } catch(e){} }
 
-  /* Telegram */
-  if (inTg){
+  /* Светлая тема и цвета шапки Telegram */
+  function applyTheme(){
+    if (!inTg) return;
+    root.setAttribute("data-theme", "light");
     try {
-      tg.ready(); tg.expand();
-      if (ver("6.1")){ tg.setHeaderColor("#0B1116"); tg.setBackgroundColor("#0B1116"); }
-      if (ver("7.10") && tg.setBottomBarColor) tg.setBottomBarColor("#0B1116");
-      if (ver("7.7") && tg.disableVerticalSwipes) tg.disableVerticalSwipes();
+      var cs = getComputedStyle(root), bg = cs.getPropertyValue("--bg").trim(), sf = cs.getPropertyValue("--surface").trim();
+      if (ver("6.1")){ tg.setHeaderColor(bg); tg.setBackgroundColor(bg); }
+      if (ver("7.10") && tg.setBottomBarColor) tg.setBottomBarColor(sf);
     } catch(e){}
+  }
+  if (inTg){
+    try { tg.ready(); tg.expand(); if (ver("7.7") && tg.disableVerticalSwipes) tg.disableVerticalSwipes(); } catch(e){}
+    applyTheme();
+    try { tg.onEvent("themeChanged", applyTheme); } catch(e){}
   }
 
   var toastEl = document.getElementById("toast"), toastT;
-  function toast(t){ toastEl.textContent = t; toastEl.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove("on"); }, 2600); }
-
+  function toast(t){ toastEl.textContent = t; toastEl.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove("on"); }, 2400); }
   function openTg(url){
     if (inTg && tg.openTelegramLink){ try { tg.openTelegramLink(url); return; } catch(e){} }
-    window.open(url, "_blank", "noopener") || (location.href = url);
+    var a = document.createElement("a"); a.href = url; a.target = "_blank"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
   }
   function openExt(url){
     if (inTg && tg.openLink){ try { tg.openLink(url); return; } catch(e){} }
     var a = document.createElement("a"); a.href = url; a.target = "_blank"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
   }
-  function copy(text){
-    try { if (navigator.clipboard) return navigator.clipboard.writeText(text).catch(function(){}); } catch(e){}
-  }
-  function sendToDm(text){
-    copy(text);
-    openTg("https://t.me/" + DM + "?text=" + encodeURIComponent(text));
-  }
+  function copy(text){ try { if (navigator.clipboard) navigator.clipboard.writeText(text).catch(function(){}); } catch(e){} }
+  function sendToDm(text){ copy(text); openTg("https://t.me/" + DM + "?text=" + encodeURIComponent(text)); }
 
   /* Навигация */
-  var cur = "home", history_ = [], scrolls = {};
-  var screens = {}; document.querySelectorAll(".screen").forEach(function(s){ screens[s.dataset.tab] = s; });
+  var cur = "home", hist = [], scrolls = {}, screens = {};
+  document.querySelectorAll(".screen").forEach(function(s){ screens[s.dataset.tab] = s; });
   var tabs = document.querySelectorAll(".tab");
   function go(name, fromBack){
-    if (!screens[name] || name === cur) { if (name === cur) window.scrollTo({top:0,behavior:reduced?"auto":"smooth"}); return; }
+    if (!screens[name]) return;
+    if (name === cur){ window.scrollTo({top:0, behavior:reduced?"auto":"smooth"}); return; }
     scrolls[cur] = window.scrollY;
-    if (!fromBack) history_.push(cur);
-    screens[cur].classList.remove("on");
-    screens[name].classList.add("on");
+    if (!fromBack) hist.push(cur);
+    screens[cur].classList.remove("on"); screens[name].classList.add("on");
     tabs.forEach(function(t){ t.classList.toggle("on", t.dataset.go === name); });
     cur = name;
     window.scrollTo(0, fromBack ? (scrolls[name] || 0) : 0);
     syncBack();
   }
-  document.querySelectorAll("[data-go]").forEach(function(b){
-    b.addEventListener("click", function(){ haptic(); go(b.dataset.go); });
-  });
+  document.querySelectorAll("[data-go]").forEach(function(b){ b.addEventListener("click", function(){ haptic(); go(b.dataset.go); }); });
 
-  /* Кнопка «Назад» Telegram */
-  var lb = document.getElementById("lb");
-  function canBack(){ return lb.classList.contains("on") || (cur === "quiz" && qStep > 0 && qStep < 3) || history_.length > 0; }
+  /* Кнопка «Назад» */
+  var lb = document.getElementById("lb"), sheetWrap = document.getElementById("sheetWrap");
+  var qStep = 0;
+  function canBack(){ return lb.classList.contains("on") || sheetWrap.classList.contains("on") || (cur === "quiz" && qStep > 0 && qStep < 3) || hist.length > 0; }
   function back(){
-    if (lb.classList.contains("on")) { closeLb(); return; }
+    if (lb.classList.contains("on")) return closeLb();
+    if (sheetWrap.classList.contains("on")) return closeSheet();
     if (cur === "quiz" && qStep > 0 && qStep < 3){ qStep--; showStep(); return; }
-    var prev = history_.pop(); if (prev) go(prev, true);
+    var prev = hist.pop(); if (prev) go(prev, true);
     syncBack();
   }
-  function syncBack(){
-    if (!inTg || !tg.BackButton || !ver("6.1")) return;
-    try { canBack() ? tg.BackButton.show() : tg.BackButton.hide(); } catch(e){}
-  }
+  function syncBack(){ if (!inTg || !tg.BackButton || !ver("6.1")) return; try { canBack() ? tg.BackButton.show() : tg.BackButton.hide(); } catch(e){} }
   if (inTg && tg.BackButton){ try { tg.BackButton.onClick(function(){ haptic(); back(); }); } catch(e){} }
 
-  /* Контакты */
+  /* Контакты и ссылки */
   document.querySelectorAll("[data-act=dm]").forEach(function(b){ b.addEventListener("click", function(){ haptic(); sendToDm("Здравствуйте, Людмила! Пишу из приложения. "); }); });
   document.querySelectorAll("[data-act=channel]").forEach(function(b){ b.addEventListener("click", function(){ haptic(); openTg("https://t.me/" + CHANNEL); }); });
   document.querySelectorAll("[data-href]").forEach(function(b){ b.addEventListener("click", function(){ haptic(); openExt(b.dataset.href); }); });
 
-  /* Фасад с окнами */
-  var cv = document.getElementById("facade");
-  if (cv && cv.getContext){
-    var ctx = cv.getContext("2d"), wins = [], W = 0, H = 0, dpr = Math.min(window.devicePixelRatio||1, 2), t = 0, raf;
-    function build(){
-      var r = cv.getBoundingClientRect(); W = r.width; H = r.height; if (!W || !H) return;
-      cv.width = W*dpr; cv.height = H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); wins = [];
-      var colW = 64, cols = Math.ceil(W/colW)+1, wW = 13, wH = 18, gx = 9, gy = 12;
-      for (var c=0;c<cols;c++){
-        var s = Math.sin(c*12.9898)*43758.5453, f = s-Math.floor(s), top = H*(0.08+f*0.36), per = Math.max(1, Math.floor((colW-12)/(wW+gx)));
-        for (var y=top; y<H+wH; y+=wH+gy) for (var k=0;k<per;k++){
-          var x = c*colW+6+k*(wW+gx); if (x+wW>W) continue;
-          var s2 = Math.sin(x*7.13+y*3.71)*9431.23, f2 = s2-Math.floor(s2);
-          wins.push({x:x,y:y,w:wW,h:wH,warm:f2<0.2?0.5+f2:0,target:f2<0.2?0.5+f2:0,phase:f2*6.28});
-        }
-      }
-    }
-    function draw(){
-      t += 0.0125; ctx.clearRect(0,0,W,H);
-      for (var i=0;i<wins.length;i++){
-        var w = wins[i], tgt = w.target;
-        if (!reduced && Math.sin(t*0.5+w.phase*3.1) > 0.96) tgt = 0.75;
-        w.warm += (tgt-w.warm)*0.05;
-        ctx.fillStyle = "rgba(24,36,45,"+(0.5+w.warm*0.1)+")"; ctx.fillRect(w.x,w.y,w.w,w.h);
-        if (w.warm > 0.03){ ctx.fillStyle = "rgba(233,162,59,"+(w.warm*0.75)+")"; ctx.fillRect(w.x,w.y,w.w,w.h); ctx.fillStyle="rgba(11,17,22,.4)"; ctx.fillRect(w.x,w.y+w.h*0.46,w.w,1); }
-      }
-      if (!reduced) raf = requestAnimationFrame(draw);
-    }
-    build(); draw();
-    window.addEventListener("resize", function(){ build(); if (reduced) draw(); });
-    document.addEventListener("visibilitychange", function(){ if (document.hidden) cancelAnimationFrame(raf); else if (!reduced) { cancelAnimationFrame(raf); draw(); } });
-  }
-
-  /* Бегущая строка */
-  var places = ["Московский","Василеостровский","Фрунзенский","Приморский","Петроградский","Выборгский","Невский","Красногвардейский","Петродворцовый","Пушкин","Стрельна","Кудрово","Мурино","Янино","Новосаратовка","Москва","Подмосковье","Калининград","Анапа","Краснодар","Петрозаводск"];
-  var row = document.getElementById("tickRow"), h = "";
-  places.forEach(function(p){ h += "<span>"+p+"</span>"; }); row.innerHTML = h + h;
-
-  /* Аккордеон услуг */
-  document.querySelectorAll("#acc .acc-head").forEach(function(b){
-    b.addEventListener("click", function(){
-      var item = b.parentNode, open = !item.classList.contains("open");
-      document.querySelectorAll("#acc .acc-item").forEach(function(it){ it.classList.remove("open"); it.firstElementChild.setAttribute("aria-expanded","false"); });
-      if (open){ item.classList.add("open"); b.setAttribute("aria-expanded","true"); }
-      haptic("sel");
-    });
+  /* Услуги */
+  var services = [
+    { t:"Квартира для жизни", s:"Дорога, двор, что построят рядом",
+      p:"Считаем дорогу до работы и школы, смотрим двор и соседей по площадке, проверяем, что построят за окном. Один клиент в итоге взял квартиру меньше, чем планировал, и добрал кладовую. Получилось удобнее и дешевле.",
+      m:"От 28 м² · комфорт, комфорт+ и бизнес" },
+    { t:"Квартира для вложения", s:"Ранний вход и расчёт доходности",
+      p:"Ранняя стадия, ликвидные планировки, район с приходящей инфраструктурой. Разбираем экономику проекта и считаем срок выхода ещё до брони. Спекулятивные проекты не беру.",
+      m:"Расчёт доходности до брони" },
+    { t:"Сложная ипотека", s:"ИП, самозанятые, доход без 2-НДФЛ",
+      p:"Собираю анкету так, чтобы банк увидел платёжеспособность, и подаю туда, где такой профиль проходит. Работаю с семейной ипотекой и субсидированными ставками застройщиков.",
+      m:"Лимит семейной ипотеки по СПб и области 12 млн ₽" },
+    { t:"Квартира под аренду", s:"Меблировка и поиск арендатора",
+      p:"Дизайнер и команда, мебель и декор, проверенные подрядчики, съёмка, оценка рынка и поиск арендатора. Студия готова примерно за три недели, однокомнатная за полтора месяца, семейная двух-трёхкомнатная примерно за три.",
+      m:"От 500 000 ₽ · на Васильевском заселили за месяц" },
+    { t:"Загородный дом", s:"Участок, подрядчик, ИЖС",
+      p:"Для этого направления я отдельно училась у практиков рынка. Типичные ошибки: неудачный участок, подрядчик без репутации, сроки стройки не совпадают с условиями семейной ипотеки на ИЖС. Разбираем всё до первого платежа.",
+      m:"ИЖС · эскроу · аккредитованные подрядчики" }
+  ];
+  var svcList = document.getElementById("services"), html = "";
+  services.forEach(function(s, i){
+    html += '<button class="row" data-svc="'+i+'"><div><div class="t">'+s.t+'</div><div class="s">'+s.s+'</div></div><svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>';
   });
+  svcList.innerHTML = html;
+  var curSvc = null;
+  function openSheet(i){
+    var s = services[i]; curSvc = s;
+    document.getElementById("shTitle").textContent = s.t;
+    document.getElementById("shText").textContent = s.p;
+    document.getElementById("shMeta").textContent = s.m;
+    sheetWrap.classList.add("on"); syncBack();
+  }
+  function closeSheet(){ sheetWrap.classList.remove("on"); syncBack(); }
+  svcList.querySelectorAll("[data-svc]").forEach(function(b){ b.addEventListener("click", function(){ haptic(); openSheet(+b.dataset.svc); }); });
+  sheetWrap.addEventListener("click", function(e){ if (e.target === sheetWrap) closeSheet(); });
+  document.getElementById("shBtn").addEventListener("click", function(){ haptic("ok"); if (curSvc) sendToDm("Здравствуйте, Людмила! Интересует: " + curSvc.t.toLowerCase() + ". "); });
 
-  /* Лайтбокс */
+  /* Просмотр фото */
   var lbImg = document.getElementById("lbImg"), lbCap = document.getElementById("lbCap");
   function openLb(src, cap){ lbImg.src = src; lbCap.textContent = cap || ""; lb.classList.add("on"); syncBack(); }
   function closeLb(){ lb.classList.remove("on"); lbImg.src = "data:,"; syncBack(); }
-  document.querySelectorAll("[data-img]").forEach(function(b){
-    b.addEventListener("click", function(){ haptic(); var s = b.querySelector("span"); openLb(b.dataset.img, s ? s.textContent : ""); });
-  });
+  document.querySelectorAll("[data-img]").forEach(function(b){ b.addEventListener("click", function(){ haptic(); var s = b.querySelector("span"); openLb(b.dataset.img, s ? s.textContent : ""); }); });
   lb.addEventListener("click", function(e){ if (e.target !== lbImg) closeLb(); });
-  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && lb.classList.contains("on")) closeLb(); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape"){ if (lb.classList.contains("on")) closeLb(); else if (sheetWrap.classList.contains("on")) closeSheet(); } });
 
   /* Подбор */
-  var answers = {}, qStep = 0;
-  var steps = document.querySelectorAll(".q-step"), prog = document.querySelectorAll("#qProg i");
-  var qCount = document.getElementById("qCount"), qRes = document.getElementById("qRes");
-  var titles = { live:"Квартира для жизни", invest:"Инвестиционный лот", rent:"Квартира под аренду", kids:"Покупка детям", house:"Дом за городом" };
-  var budgets = { a:"до 7 млн", b:"7–12 млн", c:"12–20 млн", d:"свыше 20 млн" };
-  var pays = { family:"Семейная ипотека", ip:"Ипотека, ИП / без 2-НДФЛ", mort:"Обычная ипотека", cash:"Рассрочка или свои деньги" };
+  var answers = {};
+  var steps = document.querySelectorAll(".q-step"), qCount = document.getElementById("qCount"), qBar = document.getElementById("qBar"), qRes = document.getElementById("qRes");
+  var titles = { live:"Квартира для жизни", invest:"Квартира для вложения", rent:"Квартира под аренду", kids:"Покупка детям", house:"Дом за городом" };
+  var budgets = { a:"до 7 млн ₽", b:"7–12 млн ₽", c:"12–20 млн ₽", d:"больше 20 млн ₽" };
+  var pays = { family:"Семейная ипотека", ip:"Ипотека, ИП или без 2-НДФЛ", mort:"Обычная ипотека", cash:"Рассрочка или свои деньги" };
   var goalText = {
-    live:"Для жизни в первую очередь смотрим на дорогу, двор и то, что построят напротив. Подберу проекты, где окружение уже сложилось, а не обещано на рендере.",
-    invest:"Под инвестицию нужен ранний вход и ликвидная нарезка. Разберём экономику конкретных корпусов и посчитаем горизонт выхода до того, как вы внесёте бронь.",
-    rent:"Под аренду считаем ставку и срок окупаемости, а не красоту фасада. Могу взять на себя меблировку и поиск арендатора, чтобы квартира начала платить сразу.",
-    kids:"Покупка детям — длинный горизонт, поэтому важнее всего район и то, каким он станет через десять лет. Отберу проекты с приходящей инфраструктурой.",
-    house:"Загородная история живёт по своим правилам: участок, подрядчик, эскроу и сроки стройки под семейную ипотеку на ИЖС. Разберём каждый пункт до первого платежа."
+    live:"Для жизни в первую очередь смотрим на дорогу, двор и то, что построят напротив. Подберу проекты, где окружение уже сложилось.",
+    invest:"Для вложения нужен ранний вход и ликвидные планировки. Разберём экономику конкретных корпусов и посчитаем срок выхода до брони.",
+    rent:"Под аренду считаем ставку и срок окупаемости. Могу взять на себя меблировку и поиск арендатора, чтобы квартира начала приносить доход сразу.",
+    kids:"Покупка детям рассчитана на много лет вперёд, поэтому главное район и то, каким он станет через десять лет. Отберу проекты с приходящей инфраструктурой.",
+    house:"У загородной покупки свои правила: участок, подрядчик, эскроу и сроки стройки под семейную ипотеку на ИЖС. Разберём каждый пункт до первого платежа."
   };
   var payText = {
-    family:"По семейной ипотеке в Петербурге и области доступно 12 млн по льготной ставке, остальное комбинируется с рыночной. Проверю, какие проекты аккредитованы и где ставка ещё ниже.",
-    ip:"ИП и доход без 2-НДФЛ — моя профильная история. Знаю, какие банки смотрят на такие анкеты и как их собрать, чтобы одобрение пришло с первого раза.",
-    mort:"Кроме рыночной ставки посмотрим субсидированные программы застройщиков, фиксацию на несколько лет и траншевую схему: на время стройки платёж может быть в разы ниже.",
-    cash:"Тогда главный инструмент — торг и рассрочка. У застройщиков бывают схемы на несколько лет без банка, а за быструю оплату реально обсуждается скидка."
+    family:"По семейной ипотеке в Петербурге и области доступно 12 млн по льготной ставке, остальное по рыночной. Проверю, какие проекты аккредитованы и где ставка ещё ниже.",
+    ip:"С ИП и доходом без 2-НДФЛ работаю постоянно. Знаю, какие банки одобряют такие анкеты и как их собрать с первого раза.",
+    mort:"Кроме рыночной ставки посмотрим субсидированные программы застройщиков, фиксацию ставки и траншевую схему: пока идёт стройка, платёж может быть в разы ниже.",
+    cash:"Тогда главные инструменты торг и рассрочка. У застройщиков бывают схемы на несколько лет без банка, а за быструю оплату можно обсуждать скидку."
   };
   function showStep(){
-    steps.forEach(function(s,i){ s.classList.toggle("on", i === qStep); });
-    prog.forEach(function(p,i){ p.classList.toggle("on", i <= qStep); });
-    qCount.textContent = qStep < 3 ? "Вопрос " + (qStep+1) + " из 3" : "Готово";
+    steps.forEach(function(s, i){ s.classList.toggle("on", i === qStep); });
+    qCount.textContent = qStep < 3 ? "Шаг " + (qStep+1) + " из 3" : "Готово";
+    qBar.style.width = (Math.min(qStep+1, 3) / 3 * 100) + "%";
     qRes.classList.toggle("on", qStep >= 3);
     steps.forEach(function(s){ s.querySelectorAll(".q-opt").forEach(function(o){ o.classList.toggle("picked", answers[s.dataset.k] === o.dataset.v); }); });
     syncBack();
   }
   function finish(){
-    document.getElementById("rTitle").textContent = (titles[answers.goal]||"Ваш запрос") + " · " + (budgets[answers.budget]||"");
-    document.getElementById("rText").textContent = (goalText[answers.goal]||"") + " " + (payText[answers.pay]||"");
+    document.getElementById("rTitle").textContent = (titles[answers.goal] || "Ваш запрос") + ", " + (budgets[answers.budget] || "");
+    document.getElementById("rText").textContent = (goalText[answers.goal] || "") + " " + (payText[answers.pay] || "");
+    document.getElementById("rAnswers").innerHTML =
+      '<div class="row"><div class="t">Цель</div><div class="v">'+(titles[answers.goal]||"—")+'</div></div>'+
+      '<div class="row"><div class="t">Бюджет</div><div class="v">'+(budgets[answers.budget]||"—")+'</div></div>'+
+      '<div class="row"><div class="t">Оплата</div><div class="v">'+(pays[answers.pay]||"—")+'</div></div>';
     qStep = 3; showStep(); haptic("ok");
     window.scrollTo({top:0, behavior:reduced?"auto":"smooth"});
   }
   document.querySelectorAll(".q-opt").forEach(function(b){
     b.addEventListener("click", function(){
-      var k = b.closest(".q-step").dataset.k; answers[k] = b.dataset.v; haptic("sel");
-      b.classList.add("picked");
-      setTimeout(function(){ if (qStep >= 2) finish(); else { qStep++; showStep(); } }, reduced ? 0 : 180);
+      answers[b.closest(".q-step").dataset.k] = b.dataset.v; haptic("sel"); b.classList.add("picked");
+      setTimeout(function(){ if (qStep >= 2) finish(); else { qStep++; showStep(); } }, reduced ? 0 : 150);
     });
   });
-  document.getElementById("qAgain").addEventListener("click", function(){ answers = {}; qStep = 0; document.getElementById("sent").classList.remove("on"); showStep(); });
+  document.getElementById("qAgain").addEventListener("click", function(){ answers = {}; qStep = 0; document.getElementById("sent").classList.remove("on"); showStep(); window.scrollTo(0,0); });
 
   var fName = document.getElementById("fName");
   try { var u = inTg && tg.initDataUnsafe && tg.initDataUnsafe.user; if (u && u.first_name) fName.value = u.first_name; } catch(e){}
@@ -839,29 +690,27 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;background:var(--ink)
     e.preventDefault();
     var phone = document.getElementById("fPhone").value.trim(), note = document.getElementById("fNote").value.trim(), name = fName.value.trim();
     var lines = ["Здравствуйте, Людмила! Заявка на подбор из приложения.",
-      "Цель: " + (titles[answers.goal]||"—"),
-      "Бюджет: " + (budgets[answers.budget]||"—"),
-      "Оплата: " + (pays[answers.pay]||"—")];
+      "Цель: " + (titles[answers.goal] || "—"), "Бюджет: " + (budgets[answers.budget] || "—"), "Оплата: " + (pays[answers.pay] || "—")];
     if (name) lines.push("Имя: " + name);
     if (phone) lines.push("Телефон: " + phone);
     if (note) lines.push("Пожелания: " + note);
-    haptic("ok");
-    sendToDm(lines.join("\n"));
+    haptic("ok"); sendToDm(lines.join("\n"));
     document.getElementById("sent").classList.add("on");
   });
 
-  /* Калькулятор ипотеки */
-  var LIMIT = 12e6;
-  var el = function(id){ return document.getElementById(id); };
+  /* Калькулятор */
+  var LIMIT = 12e6, el = function(id){ return document.getElementById(id); };
   var cPrice = el("cPrice"), cDown = el("cDown"), cTerm = el("cTerm"), cRate = el("cRate"), cMRate = el("cMRate");
-  var progRates = { family:6, fix:7.77, market:21 }, prog_ = "family";
-  var rub = function(n){ return Math.round(n).toLocaleString("ru-RU").replace(/,/g," ") + " ₽"; };
-  var mln = function(n){ return (n/1e6).toLocaleString("ru-RU",{maximumFractionDigits:2}) + " млн ₽"; };
-  function ann(S, rate, n){ if (S <= 0) return 0; var r = rate/1200; return r < 1e-7 ? S/n : S*r/(1-Math.pow(1+r,-n)); }
-  function fill(r){ var p = (r.value - r.min)/(r.max - r.min)*100; r.style.setProperty("--p", p + "%"); }
+  var progRates = { family:6, fix:7.77, market:21 }, prog = "family";
+  var fmt = function(n){ return Math.round(n).toLocaleString("ru-RU").replace(/[  ,]/g, " "); };
+  var rub = function(n){ return fmt(n) + " ₽"; };
+  var mln = function(n){ return (n/1e6).toLocaleString("ru-RU", {maximumFractionDigits:2}) + " млн ₽"; };
+  var pct = function(n){ return String(n).replace(".", ","); };
+  function ann(S, rate, n){ if (S <= 0) return 0; var r = rate/1200; return r < 1e-7 ? S/n : S*r/(1-Math.pow(1+r, -n)); }
+  function fill(r){ r.style.setProperty("--p", ((r.value - r.min)/(r.max - r.min)*100) + "%"); }
   function years(n){ var m = n%10, mm = n%100; return n + " " + (m===1&&mm!==11 ? "год" : (m>=2&&m<=4&&(mm<12||mm>14)) ? "года" : "лет"); }
   function calc(){
-    [cPrice,cDown,cTerm].forEach(fill);
+    [cPrice, cDown, cTerm].forEach(fill);
     var price = +cPrice.value*1e6, downP = +cDown.value, term = +cTerm.value, n = term*12;
     var down = price*downP/100, S = price - down;
     var rate = Math.max(0, parseFloat(String(cRate.value).replace(",", ".")) || 0);
@@ -869,15 +718,13 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;background:var(--ink)
     el("oPrice").textContent = mln(price);
     el("oDown").innerHTML = downP + "% <small>· " + mln(down) + "</small>";
     el("oTerm").textContent = years(term);
-    var over = prog_ === "family" && S > LIMIT;
+    var over = prog === "family" && S > LIMIT;
     el("mRateWrap").hidden = !over;
     var pay, split = "";
-    if (over){
-      var p1 = ann(LIMIT, rate, n), p2 = ann(S-LIMIT, mrate, n); pay = p1 + p2;
-      split = "12 млн по " + String(rate).replace(".", ",") + "%: " + rub(p1) + " + остаток по " + String(mrate).replace(".", ",") + "%: " + rub(p2);
-    } else pay = ann(S, rate, n);
-    var total = pay*n, interest = Math.max(0, total - S);
-    el("rPay").textContent = Math.round(pay).toLocaleString("ru-RU").replace(/,/g," ");
+    if (over){ var p1 = ann(LIMIT, rate, n), p2 = ann(S - LIMIT, mrate, n); pay = p1 + p2; split = "12 млн по " + pct(rate) + "%: " + rub(p1) + " + остаток по " + pct(mrate) + "%: " + rub(p2); }
+    else pay = ann(S, rate, n);
+    var interest = Math.max(0, pay*n - S);
+    el("rPay").textContent = fmt(pay);
     el("rSplit").textContent = split;
     el("rCredit").textContent = rub(S);
     el("rOver").textContent = rub(interest);
@@ -886,40 +733,37 @@ input[type=range]::-moz-range-thumb{width:18px;height:18px;background:var(--ink)
     var tot = S + interest || 1;
     el("bBody").style.width = (S/tot*100) + "%"; el("bInt").style.width = (interest/tot*100) + "%";
     var w = [];
-    if (prog_ === "family" && downP < 20) w.push("По семейной ипотеке первый взнос обычно от 20%.");
+    if (prog === "family" && downP < 20) w.push("По семейной ипотеке первый взнос обычно от 20%.");
     if (S <= 0) w.push("Взнос покрывает всю стоимость, кредит не нужен.");
-    var wEl = el("warn"); wEl.textContent = w.join(" "); wEl.hidden = !w.length;
+    el("warn").textContent = w.join(" "); el("warn").hidden = !w.length;
     return { price:price, downP:downP, term:term, rate:rate, mrate:mrate, pay:pay, over:over };
   }
-  [cPrice,cDown,cTerm].forEach(function(r){ r.addEventListener("input", function(){ calc(); }); r.addEventListener("change", function(){ haptic("sel"); }); });
-  [cRate,cMRate].forEach(function(i){ i.addEventListener("input", calc); });
-  document.querySelectorAll("#chips .chip").forEach(function(c){
+  [cPrice, cDown, cTerm].forEach(function(r){ r.addEventListener("input", calc); r.addEventListener("change", function(){ haptic("sel"); }); });
+  [cRate, cMRate].forEach(function(i){ i.addEventListener("input", calc); });
+  document.querySelectorAll("#seg button").forEach(function(c){
     c.addEventListener("click", function(){
-      prog_ = c.dataset.prog; haptic("sel");
-      document.querySelectorAll("#chips .chip").forEach(function(x){ x.classList.toggle("on", x === c); });
-      cRate.value = progRates[prog_];
-      el("lRate").textContent = prog_ === "family" ? "Ставка до 12 млн, %" : "Ставка, %";
+      prog = c.dataset.prog; haptic("sel");
+      document.querySelectorAll("#seg button").forEach(function(x){ x.classList.toggle("on", x === c); });
+      cRate.value = progRates[prog];
+      el("lRate").textContent = prog === "family" ? "Ставка до 12 млн, %" : "Ставка, %";
       calc();
     });
   });
-  el("lRate").textContent = "Ставка до 12 млн, %";
   document.querySelector("[data-act=calc-send]").addEventListener("click", function(){
     var r = calc(), names = { family:"семейная", fix:"фиксированная", market:"рыночная" };
     var msg = ["Здравствуйте, Людмила! Посчитал(а) ипотеку в приложении, хочу точный расчёт.",
-      "Стоимость: " + mln(r.price),
-      "Первый взнос: " + r.downP + "%",
-      "Срок: " + years(r.term),
-      "Программа: " + names[prog_] + ", " + String(r.rate).replace(".", ",") + "%" + (r.over ? " (сверх 12 млн — " + String(r.mrate).replace(".", ",") + "%)" : ""),
-      "Платёж по калькулятору: " + rub(r.pay) + "/мес"].join("\n");
+      "Стоимость: " + mln(r.price), "Первый взнос: " + r.downP + "%", "Срок: " + years(r.term),
+      "Программа: " + names[prog] + ", " + pct(r.rate) + "%" + (r.over ? " (сверх 12 млн " + pct(r.mrate) + "%)" : ""),
+      "Платёж по калькулятору: " + rub(r.pay) + " в месяц"].join("\n");
     haptic("ok"); sendToDm(msg); toast("Открываем чат с Людмилой");
   });
   calc();
 
-  /* Открыть нужный раздел по ссылке t.me/бот?startapp=quiz */
+  /* Раздел по ссылке t.me/бот?startapp=quiz */
   var start = "";
   try { start = (inTg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) || ""; } catch(e){}
   if (!start && /^#[a-z]+$/.test(location.hash)) start = location.hash.slice(1);
-  if (screens[start]) { go(start); history_ = []; syncBack(); }
+  if (screens[start]){ go(start); hist = []; syncBack(); }
 })();
 </script>
 
